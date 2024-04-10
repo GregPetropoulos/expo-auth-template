@@ -1,15 +1,58 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Link, router } from 'expo-router';
 import { TextInput, View, Text } from '@/components/Themed';
 import { StyleSheet } from 'react-native';
 import Button from '@/components/Button';
 import { useSession } from '@/store/context/authCtx';
+import { KyBoardTypes } from '@/enums/enums';
+import {
+  GoogleSignin,
+  GoogleSigninButton
+} from '@react-native-google-signin/google-signin';
 
 export default function SignIn() {
+  const [error, setError] = useState(null); //google sign in
+  const [userInfo, setUserInfo] = useState <any>(null); //google sing in
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { signIn, isLoading } = useSession();
+
+  {
+    /*
+   ======Google Sign in======
+        ===================
+        ===================
+         Needs to be imp with ctx 
+         ==================
+         ==================
+         */
+  }
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: "685384373741-4a8ti7ro9rtmqs7psn0rf7tbuq99ur9l.apps.googleusercontent.com"
+
+    });
+  }, []);
+
+  const googleSignIn = async (): Promise<void> => {
+    try {
+      await GoogleSignin.hasPlayServices();
+
+      const user: any = await GoogleSignin.signIn();
+      setUserInfo(user);
+      setError(null);
+    } catch (e: any) {
+      setError(e);
+    }
+  };
+
+  const googleLogout = (): void => {
+    setUserInfo(null);
+    GoogleSignin.revokeAccess();
+    GoogleSignin.signOut();
+  };
+  // ======Google Sign in======
 
   if (isLoading) {
     return (
@@ -19,19 +62,44 @@ export default function SignIn() {
     );
   }
 
-  let isInvalid = false;//TODO
-
+  let isInvalid = false; //TODO VALIDATION
   return (
     <View
       style={{
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: 'green',
-        borderWidth: 1
+        alignItems: 'center'
       }}>
       <View style={styles.form}>
         <Text style={styles.title}>App Sign In</Text>
+        {/*
+        ===================
+        ===================
+         Needs to be imp with ctx 
+         ==================
+         ==================
+         */}
+        <Text>Google Sign in</Text>
+        <Text>{JSON.stringify({ error })}</Text>
+        {userInfo && <Text>{JSON.stringify(userInfo.user )}</Text>}
+        {userInfo ? (
+          <Button onPress={googleLogout}>Logout</Button>
+        ) : (
+          <GoogleSigninButton
+            size={GoogleSigninButton.Size.Standard}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={googleSignIn}
+          />
+        )}
+
+        {/*
+        ===================
+        ===================
+         Needs to be imp with ctx 
+         ==================
+         ==================
+         */}
+
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Username</Text>
           <TextInput
@@ -117,7 +185,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     textDecorationLine: 'underline',
-    color: 'purple',
+    color: 'grey',
     opacity: 0.8
   }
 });

@@ -4,18 +4,15 @@ import { useStorageState } from '@/hooks/useStorageState';
 interface UserData {
   username: string;
   password: string;
-}
-
-interface UserRegisterData extends UserData {
-  confirmPassword: string;
-  email: string;
-  confirmEmail: string;
+  confirmPassword?: string;
+  email?: string;
+  confirmEmail?: string;
 }
 
 const AuthContext = React.createContext<{
   signIn: (userData: UserData) => void;
   signOut: () => void;
-  register: (userData: UserRegisterData) => void;
+  register: (userData: UserData) => void;
   session?: string | null;
   isLoading: boolean;
 }>({
@@ -59,7 +56,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const onSignOut = () => {
     setSession(null);
   };
-  const onRegister = (userData: UserRegisterData) => {
+  const onRegister = (userData: UserData) => {
     setSession('xxx');//temp for testing
   };
   return (

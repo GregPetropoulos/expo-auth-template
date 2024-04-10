@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 import { Link, router } from 'expo-router';
 import { TextInput, View, Text } from '@/components/Themed';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import Button from '@/components/Button';
 import { useSession } from '@/store/context/authCtx';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 export default function Register() {
   const [username, setUsername] = useState('');
@@ -13,7 +15,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
   const { register, isLoading } = useSession();
-
+const insets = useSafeAreaInsets()
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -41,13 +43,10 @@ export default function Register() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
+    <ScrollView
+      contentContainerStyle={{
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: 'green',
-        borderWidth: 1
       }}>
       <View style={styles.form}>
         <Text style={styles.title}>App Sign In</Text>
@@ -124,14 +123,15 @@ export default function Register() {
           </Link>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   form: {
     alignItems: 'center',
     width: '100%',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    paddingTop:40
   },
   inputContainer: {
     marginVertical: 16,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     textDecorationLine: 'underline',
-    color: 'purple',
+    color: 'grey',
     opacity: 0.8
   }
 });
