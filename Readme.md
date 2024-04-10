@@ -296,3 +296,16 @@ Implemented this in the sign in page to POC then will later implement into the c
   ```
   # Last step run the dev server on the development build to see everything is working 
   - npx expo --dev-client
+  - Worked right away for ios and android simulators
+  - Devices were not able to start with the development build
+    - Trouble shoot and found the docs for building for a device
+    
+    #### Android
+      - android run this command `eas build --profile development --platform android` and scan the bar code with real android device
+    
+    #### iOS [Must have developer account](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-the-device)
+      -ios device has more steps 
+          - set ios phone turn on developer mode 
+            - Go to the Settings app, and navigate to Privacy & Security > Developer Mode toggle it on and restart phone.
+            - Will need apple developer account after running `eas device:create` stopped here I don't have an account yet
+            - alternatively can connect to a mac with xcode see the link[connect to ios device with mac](https://docs.expo.dev/guides/ios-developer-mode/#connect-an-ios-device-with-a-mac)
