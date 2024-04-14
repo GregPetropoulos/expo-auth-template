@@ -13,7 +13,7 @@ import {
 
 export default function SignIn() {
   const [error, setError] = useState(null); //google sign in
-  const [userInfo, setUserInfo] = useState <any>(null); //google sing in
+  const [userInfo, setUserInfo] = useState<any>(null); //google sign in
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { signIn, isLoading } = useSession();
@@ -30,9 +30,9 @@ export default function SignIn() {
   }
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: "685384373741-4a8ti7ro9rtmqs7psn0rf7tbuq99ur9l.apps.googleusercontent.com"
-
-    });
+      webClientId:
+        '685384373741-4a8ti7ro9rtmqs7psn0rf7tbuq99ur9l.apps.googleusercontent.com'
+    }); //values from the google-services.json file
   }, []);
 
   const googleSignIn = async (): Promise<void> => {
@@ -81,7 +81,7 @@ export default function SignIn() {
          */}
         <Text>Google Sign in</Text>
         <Text>{JSON.stringify({ error })}</Text>
-        {userInfo && <Text>{JSON.stringify(userInfo.user )}</Text>}
+        {userInfo && <Text>{JSON.stringify(userInfo.user)}</Text>}
         {userInfo ? (
           <Button onPress={googleLogout}>Logout</Button>
         ) : (

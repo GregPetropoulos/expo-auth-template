@@ -1,167 +1,35 @@
-# Authentication Template For A Expo Manage React Native project
+# Google Authentication Template For A Expo Manage React Native project
 
-# Configuring the APP with Google's firebase for Android and iOS
 
-Here all the steps
+### Configuring a basic app login template  with Google's firebase for Android and iOS apps and development  build for devices and simulators/emulators
 
-- Setup/Configure app.json/eas/firebase mobile apps
-- Generate Creds SHA-1
-- Webclient Id
-- Build for simulators
-- Development Build and run the dev server
-- UI/UX
+### Table of Contents 
+- [Setup](#setup)
+- [UI/UX](#uiux)
+- [Firebase](#firebase)
+- [Configure](#configure)
+- [Generate Credentials](#generating-credentials-sha-1)
+- [Web Client Id](#web-client-id)
+- [EAS Builds](#eas-builds)
+- [Resources](#resources)
 
-### EXPO-RN-FIREBASE-LOGIN STEPS AND CONFIG
+# Setup
 
-1. Create an eas project and when naming it use same name as app.json of your project for consistency
-2. Must have run this command to wire up `eas cli  --global eas-cli && eas init --id xyz`
-3. In the google firebase console create a project
-4. click on the `ios` icon and give a app name and nick name
-5. click on the `android` icon and give a app name and nick name and create a sha-1 with eas build `eas build:configure`
-6. Choose `All`
-7. run `eas credentials`
-8. choose `Android`
-9. choose ‘development`
+Since we are building a standalone app outside of the Expo Go wrapper we need to install 3rd party libs and expo packages we need outside of the expo go app and update app.json plugins, etc 
 
-# Configuring app.json And Packages
+### Install stuff
+1. Install the google sign in package plugin with npm `npm install @react-native-google-signin/google-signin `
+2. Need to install the dev client to run development build outside of Expo Go (Now it's a standalone app) `npx expo install expo-dev-client
+`
+### Configure
 
-1. Will see this error but not a problem `Error: Specify "android.package" in app.json and run this command again. Cryptic error? Learn more`
-2. go to app.json and add `bundleIdentifier` to ios object
+Configuring the `app.json` into an `app.config.js` and updating several keys
 
-   ```
-   "ios": {
-         "supportsTablet": true,
-         "bundleIdentifier": "com.gp.firebasesignin"
-       },
-   ```
-
-3. add the `package` to the android object
-
-   ```
-       "android": {
-         "adaptiveIcon": {
-           "foregroundImage": "./assets/images/adaptive-icon.png",
-           "backgroundColor": "#ffffff"
-         },
-       "package": "com.gp.firebasesignin"
-       },
-   ```
-
-4. Add google plugin to avoid the need to eject
-
-   ```
-     "plugins": [
-             "expo-router",
-             "expo-secure-store",
-             "@react-native-google-signin/google-signin"
-           ]
-   ```
-
-5. Install the google sign in package plugin with npm `npm install @react-native-google-signin/google-signin `
-6. Need to install the dev client to run development build outside of Expo Go (Now it's a standalone app) `npx expo install expo-dev-client`
-
-# Generating Credentials (SHA-1)
-
-1. Now that we updated the app.json run the `eas credentials` pick `Android` and `development`
-
-2. Select the Keystore
-
-   ```
-   What do you want to do? › - Use arrow-keys. Return to submit.
-   ❯   Keystore: Manage everything needed to build your project
-   ```
-
-3. Select set up new key store
-
-   ```
-   What do you want to do? › - Use arrow-keys. Return to submit.
-   ❯   Set up a new keystore
-   ```
-
-4. Several questions are asked for setting the keystore and can hit return on all of them.
-   ```
-   ✔ What do you want to do? › Set up a new keystore
-       ✔ Assign a name to your build credentials: … Build Credentials tL3-oWp6Yg
-       ✔ Generate a new Android Keystore? … yes
-   ```
-5. This is what the credentials look like and we need the SHA1 Fingerprint to put into firebase for the android app
-
-   ```
-         Configuration: Build Credentials 123abc-1a2b (Default)
-             Keystore
-             Type                JKS
-             Key Alias           abc123
-             MD5 Fingerprint     00:00:00...
-             SHA1 Fingerprint    00:00:00...
-             SHA256 Fingerprint  00:00:00...
-   ```
-
-6. Copy the SHA1 value and past into the `firebase console` for the `android app` 3rd input down is labeled `Debug signing certificate` SHA-1 (optional)
-
-7. Click register the app and down load the google-services-json and hit next all the way through to finish
-
-8. This step could have been done earlier we need to enable google sign in
-
-   **a**. In the google console go to Build> Authentication > Get Started > Sign-in Click on Google icon
-
-   **b**. Hit enable button and provide a support email (I used mine, but would need to use support@email.com for prod)
-
-   **c**. Once you save a new updated google-services.json (for Android sign in) and GoogleServices-info.Plist (for iOS sign in)
-
-9. Back at the integrated terminal ran `npx expo  --dev-client`
-
-# [Build for Simulator Android/iOS](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-emulatorsimulator)
-
-### iOS
-
-### This will error if you have not built on the simulator outside Expo Go yet
-
-- ran into an issue with the emulator needing the build installed on it
-- › `Opening on iOS...
-CommandError: No development build (com.gp.firebasesignin) for this project is installed. Please make and install a development build on the device first.`
-  <!-- - Ran this command to install on the iOS emulator `eas build --profile development-simulator --platform ios`
-- This led me to second issue so `Missing build profile in eas.json: development-simulator`
-- Ran this command next `eas build:run -p ios` This didn;t work -->
-
-- cause I needed to add to eas.json
-  ```
-        "preview": {
-        "distribution": "internal",
-            "ios": {
-              "simulator": true
-            }
-        },
-  ```
-  - Then run `eas build -p ios --profile preview` it does not have be named profile it could be named local, dev etc. The build will take a while.
-  - After the barcode show up and build finishes, Select Y to run on simulator
-  - To run the latest build `eas build:run -p ios --latest`
-  - The simulator will launch the app from the development build
-
-## Android
-
-## This will error if you have not built on the simulator outside Expo Go yet
-
-`CommandError: No development build (com.gp.firebasesignin) for this project is installed. Please make and install a development build on the device first.
-Learn more: https://docs.expo.dev/development/build/`
-
-- Run this command `eas build -p android --profile preview`
-- Select Y when prompted to install build on simulator
-
-# Set Up Web Client Id - secrets
-
-Set up environmental var on eas for google-services.json and the GoogleService-Info.plist.
-DO NOT CHECK THESE INTO THE PROJECT WITH VERSION CONTROL
-run two commands below :
-
-1. `eas secret:create --scope project --name GOOGLE_SERVICES_JSON --type file --value /Users/gregpetropoulos/Downloads/google-services.json`
-
-2. `eas secret:create --scope project --name GOOGLE_SERVICES_INFOPLIST --type file --value /Users/gregpetropoulos/Downloads/GoogleService-Info.plist`
-
-3. Change NAMESPACE of `app.json` to `app.config.js` to make it an object and add the `export default` at the top of file so we can gain access to the environment variable via process env
+1. Change <span style='color:orange'>NAMESPACE</span> of <span style='color:red'>app.json</span> to <span style='color:green'>app.config.js</span> to make it an object and add the `export default` at the top of file so we can gain access to the environment variable via process env
 
 - ex:
   ```javascript
-  app.config.js
+  //app.config.js
         export default {
                         expo: {
                           name: "auth-app-template",
@@ -170,58 +38,59 @@ run two commands below :
                         }
   ```
 
-4. In the app.config.js inside the ios object specify
+2. Go to `app.config.js` and in the <span style="color:orange">ios</span> set `bundleIdentifier:"com.gp.firebasesignin"` to the reverse url  and the environment variable `googleServicesFile:process.env.GOOGLE_SERVICES_INFOPLIST`,
 
-- ex:
-  ```
-    ios: {
-          supportsTablet: true,
-          bundleIdentifier: "com.gp.firebasesignin",
-          googleServicesFile:process.env.GOOGLE_SERVICES_INFOPLIST,
-        }
-  ```
-
-5. In the app.config.js inside the android object specify
    - ex:
-     ```
-       android: {
-           adaptiveIcon: {
-             foregroundImage: './assets/images/adaptive-icon.png',
-             backgroundColor: '#ffffff'
-           },
-           package: 'com.gp.firebasesignin',
-           googleServicesFile: process.env.GOOGLE_SERVICES_JSON
-         },
-     ```
+      ```javascript
+        ios: {
+              supportsTablet: true,
+              bundleIdentifier: "com.gp.firebasesignin",
+              googleServicesFile:process.env.GOOGLE_SERVICES_INFOPLIST,
+            }
+      ```
 
-# Development Build for Platforms/Devices
+3. In `app.config.js` in the <span style="color:orange">android</span> object set the `package: "com.gp.firebasesignin"` and the environment variable googleServicesFile: process.env.GOOGLE_SERVICES_JSON
+    - ex:
+      ```javascript
+        android: {
+            adaptiveIcon: {
+              foregroundImage: './assets/images/adaptive-icon.png',
+              backgroundColor: '#ffffff'
+            },
+            package: 'com.gp.firebasesignin',
+            googleServicesFile: process.env.GOOGLE_SERVICES_JSON
+          },
+      ```
+4. Add google plugin to avoid the need to eject
 
-[Installing build on the simulator](https://docs.expo.dev/build-reference/simulators/#installing-build-on-the-simulator)
+   ```json
+     "plugins": [
+             "expo-router",
+             "expo-secure-store",
+             "@react-native-google-signin/google-signin"
+           ]
+   ```
+5. Log into EAS and create a project, name it the same as name in app.json
+6. Must have run this command to wire up `eas cli  --global eas-cli && eas init --id xyz` (optional)
+# UI/UX 
 
-- Development build on iOS simulator: `eas build -p ios --profile development`
-- Development build on Android simulator: `eas build -p android --profile development`
-- Once the build completes you can run `npx expo start --dev-client` to run the dev build and see live changes
-
-# UI/UX
-  (Create sign in and get Webclient id)
+Create a Google Sign in and get the webClient id
 
   ### Create sign in
+  
+  Implemented this in the `sign-in.ts` page to POC then will later implement into the context
 
-Implemented this in the sign in page to POC then will later implement into the context
-
-    ```javascript
-    sing-in.ts
-
-    // imports
+```javascript
+//in your sign-in.ts or app.ts should have this code as a minimum
     import { useState, useEffect } from 'react';
     import {GoogleSignin,GoogleSigninButton} from '@react-native-google-signin/google-signin';
 
     export default function SignIn() {
     const [error, setError] = useState(null); //google sign in
-    const [userInfo, setUserInfo] = useState(null); //google sing in
+    const [userInfo, setUserInfo] = useState(null); //google sign in
 
       useEffect(() => {
-      GoogleSignin.configure();
+      GoogleSignin.configure({webClientId:'abc123.apps.googleusercontent.com'});//values from the google-services.json file
     }, []);
 
     const googleSignIn = async (): Promise<void> => {
@@ -241,21 +110,7 @@ Implemented this in the sign in page to POC then will later implement into the c
       GoogleSignin.revokeAccess();
       GoogleSignin.signOut();
     };
-    // ======Google Sign in======
-
-    ...more code
-
     return {
-
-      // more code...
-
-    {/*
-          ===================
-          ===================
-          Needs to be imp with ctx
-          ==================
-          ==================
-          */}
           <Text>Google Sign in</Text>
           <Text>{JSON.stringify({ error })}</Text>
           {userInfo && <Text>{JSON.stringify({ userInfo })}</Text>}
@@ -268,23 +123,107 @@ Implemented this in the sign in page to POC then will later implement into the c
               onPress={googleSignIn}
             />
           )}
-
-          {/*
-          ===================
-          ===================
-          Needs to be imp with ctx
-          ==================
-          ==================
-          */}
-
-      // more code...
+      }
     }
-    }
-    ```
+```
 
-### Get the weClientId
+# Firebase
+
+1. In the google firebase console create a project and name it the same as name in app.json
+2. Don't need analytics turned on 
+3. Click Continue
+3. Enable google sign in
+    -  In the google console go to `Build` > `Authentication` > `Get Started` > `Sign-in` Click on Google icon
+    - Hit enable button and provide a support email (I used mine, but would need to use support@email.com for prod)
+    - Save
+     <!-- ?? NOT SURE IF THIS NEEDED SINCE WE DOWNLOAD THE UPDATED VERSIONS OF THE GOOGLESERVICES-PLIST IN THE LATER STEPS??
+     After saving, download the environment variables to your machine, later will use these for the build via EAS
+      - <span style='color:orange'> GoogleServices-info.Plist </span> (for iOS sign in )
+      -  <span style='color:orange'>google-services.json</span> (for Android sign in) -->
+
+### iOS App
+
+1. click on the `ios` icon and give a app name and nick name
+2. For the name in the  <span style="color:green">**Apple bundle**</span> input box, enter a reverse url `com.gp.firebasesignin` it's the same value for <span style="color:orange">
+**bundleIdentifier** 
+</span>in `app.json`
+3. The nickname can be anything, I named it `Firebase Signin` 
+4. Click Register app
+5. download to your machine the <span style='color:orange'> GoogleServices-info.Plist </span> (for iOS sign in)
+
+### Android app
+
+1. click on the `android` icon and give a app name and nick name
+2. For the name in the  <span style="color:green">**Android Package Name**</span> input box, enter a reverse url `com.gp.firebasesignin` it's the same value for <span style="color:orange">
+**package**</span> in `app.json`
+3. The nickname can be anything, I named it `Firebase Signin`
+4. The <span style="color:orange"> SHA-1</span> needs to be generated in the terminal
+    - Open terminal and run `eas build:configure` this will generate `eas.json`
+    - Choose `All`
+    - Run `eas credentials`
+    - Choose `Android`
+    -  choose `development`
+        - side note: preview and production will need to generate separate credentials and google info plist
+
+ ## Generating Credentials (SHA-1)
+
+5. Select the Keystore
+
+   ```
+   What do you want to do? › - Use arrow-keys. Return to submit.
+   ❯   Keystore: Manage everything needed to build your project
+   ```
+
+6. Select set up new key store
+
+   ```
+   What do you want to do? › - Use arrow-keys. Return to submit.
+   ❯   Set up a new keystore
+   ```
+
+7. Several questions are asked for setting the keystore and can hit return on all of them.
+   ```
+   ✔ What do you want to do? › Set up a new keystore
+       ✔ Assign a name to your build credentials: … Build Credentials tL3-oWp6Yg
+       ✔ Generate a new Android Keystore? … yes
+   ```
+8. This is what the credentials look like and we need the SHA1 Fingerprint to put into firebase for the android app
+
+   ```
+         Configuration: Build Credentials 123abc-1a2b (Default)
+             Keystore
+             Type                JKS
+             Key Alias           abc123
+             MD5 Fingerprint     00:00:00...
+             SHA1 Fingerprint    00:00:00...
+             SHA256 Fingerprint  00:00:00...
+   ```
+
+9. Copy the SHA1 value and paste into the `firebase console` for the `android app` 3rd input down is labeled `Debug signing certificate` SHA-1 (optional)
+
+10. Click Register the app
+11. Download the env file <span style='color:orange'>google-services.json</span> (for Android sign in)
+12. Next all the way through to finish
+
+# Web Client Id
+
+Set up environmental variables (secrets) on <span style='color:green'>EAS</span>  with a name  set to a file we downloaded earlier from the builds for each [ios](#ios-app) /[android](#android-app) app `google-services.json` and the `GoogleService-Info.plist`.
+
+<p style='color:red'>DO NOT CHECK THESE INTO THE PROJECT WITH VERSION CONTROL</p>
+
+Run two commands below :
+
+```
+1. eas secret:create --scope project --name GOOGLE_SERVICES_JSON --type file --value /Users/gregpetropoulos/Downloads/google-services.json
+
+2. eas secret:create --scope project --name GOOGLE_SERVICES_INFOPLIST --type file --value /Users/gregpetropoulos/Downloads/GoogleService-Info.plist
+  ```
+
+
+### webClientId lives in the google-services.json
 - The google-services.json file downloaded earlier from the firebase console has property `client_id`, be aware there are several of them and we need the one that has `client_type=3`
-    ```
+    ```json
+    //in google-services.json
             {
               "client_id": "abc123.apps.googleusercontent.com",//this is the webClientId 
               "client_type": 3
@@ -292,20 +231,85 @@ Implemented this in the sign in page to POC then will later implement into the c
     ```
 - Add the webClientId into the GoogleSignin.configure() like so :
   ```javascript
-    GoogleSignin.configure({webClientId:"abc123"})
+  //sign-in.ts or app.js
+    GoogleSignin.configure({webClientId:"abc123.apps.googleusercontent.com"})
   ```
-  # Last step run the dev server on the development build to see everything is working 
-  - npx expo --dev-client
-  - Worked right away for ios and android simulators
-  - Devices were not able to start with the development build
-    - Trouble shoot and found the docs for building for a device
-    
-    #### Android
-      - android run this command `eas build --profile development --platform android` and scan the bar code with real android device
-    
-    #### iOS [Must have developer account](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-the-device)
-      -ios device has more steps 
-          - set ios phone turn on developer mode 
-            - Go to the Settings app, and navigate to Privacy & Security > Developer Mode toggle it on and restart phone.
-            - Will need apple developer account after running `eas device:create` stopped here I don't have an account yet
-            - alternatively can connect to a mac with xcode see the link[connect to ios device with mac](https://docs.expo.dev/guides/ios-developer-mode/#connect-an-ios-device-with-a-mac)
+
+# EAS Builds
+
+#### [Build for Simulator Android/iOS](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-emulatorsimulator)
+
+No preview or production builds just development builds
+
+### iOS
+
+- Check the `simulator:true` eas.json
+
+  ```json
+       "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
+  ```
+
+# Development Build for Simulators/Emulators
+
+[Installing build on the simulator](https://docs.expo.dev/build-reference/simulators/#installing-build-on-the-simulator)
+
+### Build For Android emulator and real device 
+  - Development build on Android simulator: `eas build -p android --profile development`
+  - With real device scan barcode to get the build installed  on the device
+  - `npx expo start --dev-client`
+  - Scan the barcode again with real device otherwise press a for emulator
+  - If you want to use the emulator press a
+
+### Build For iOS simulator 
+- Development build on iOS simulator: `eas build -p ios --profile development`
+- Once the build completes you can run `npx expo start --dev-client`
+- press i for the simulator 
+
+### Development for Real iOS devices
+
+  #### iOS [Must have developer account](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-the-device)
+  
+  - Several more steps are needed for an ios device to be registered
+      - set ios phone turn on developer mode 
+      - Go to the Settings app, and navigate to Privacy & Security > Developer Mode toggle it on and restart phone.
+      - Sign up with the Apple Developer Program $100/year
+      - Run `eas device:create`
+      - Follow the prompts
+        - Asks for apple id, etc...
+        - Choose the `Website` method to register the device, this gives a url associated with your build by registered to device(s). The url can be passed around to other team members for use.
+        - Scan barcode with real device
+        - Device will prompt to <span style='color:green'>"Download a profile for internal distribution"</span>
+        - Go to `Settings` > `More for Your iPhone` > `View Profile` > `Install`
+        - Now that device is registered run `eas build --profile development --platform ios`
+      - Will ask to login into apple account
+      - If you do not have a distribution certificate apple will reuse last one
+      - Choose from list of devices or for first time just yours
+      - Build will complete and present a barcode 
+      - scan barcode with real device
+      - run `npx expo start --dev-client`
+      - There are several ways but for this case use the Account syncing feature
+      - On the device log into expo
+      - Dev server should show up in app, press it to load app and should have live reloading.
+      
+      #### If you don't have an account yet 
+      - alternatively can connect to a mac with xcode see the link [connect to ios device with mac](https://docs.expo.dev/guides/ios-developer-mode/#connect-an-ios-device-with-a-mac)
+
+## Resources
+
+**video**
+
+[Chelsea Farley Google Auth Guide](https://www.youtube.com/watch?v=HY3O_wrvDsI)
+
+[Expo Developer Keith Guide on Development Builds](https://www.youtube.com/watch?v=LUFHXsBcW6w)
+
+[Kadi Kraman Build and Deploy React Native Apps with Expo EAS ](https://egghead.io/courses/build-and-deploy-react-native-apps-with-expo-eas-85ab521e)
+
+**docs**
+
+[Build for iOS simulator / Android emulator](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-emulatorsimulator)
