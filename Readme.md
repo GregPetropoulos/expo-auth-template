@@ -11,6 +11,8 @@
 - [Generate Credentials](#generating-credentials-sha-1)
 - [Web Client Id](#web-client-id)
 - [EAS Builds](#eas-builds)
+- [User flow](#user-flow)
+- [Demo](#demo)
 - [Resources](#resources)
 
 # Setup
@@ -70,8 +72,9 @@ Configuring the `app.json` into an `app.config.js` and updating several keys
              "@react-native-google-signin/google-signin"
            ]
    ```
-5. Log into EAS and create a project, name it the same as name in app.json
-6. Must have run this command to wire up `eas cli  --global eas-cli && eas init --id xyz` (optional)
+5. Log into EAS and create a project, name it the same as name in app.config.json. In my case ` name: 'auth-app-template',`
+6. Run this command to wire up the cli  `eas cli  --global eas-cli && eas init --id xyz` (where id of the EAS project to link)
+
 # UI/UX 
 
 Create a Google Sign in and get the webClient id
@@ -129,7 +132,7 @@ Create a Google Sign in and get the webClient id
 
 # Firebase
 
-1. In the google firebase console create a project and name it the same as name in app.json
+1. In the google firebase console create a project and name it the same as name in `app.config.js`
 2. Don't need analytics turned on 
 3. Click Continue
 3. Enable google sign in
@@ -146,7 +149,7 @@ Create a Google Sign in and get the webClient id
 1. click on the `ios` icon and give a app name and nick name
 2. For the name in the  <span style="color:green">**Apple bundle**</span> input box, enter a reverse url `com.gp.firebasesignin` it's the same value for <span style="color:orange">
 **bundleIdentifier** 
-</span>in `app.json`
+</span>in `app.config.js`
 3. The nickname can be anything, I named it `Firebase Signin` 
 4. Click Register app
 5. download to your machine the <span style='color:orange'> GoogleServices-info.Plist </span> (for iOS sign in)
@@ -155,7 +158,7 @@ Create a Google Sign in and get the webClient id
 
 1. click on the `android` icon and give a app name and nick name
 2. For the name in the  <span style="color:green">**Android Package Name**</span> input box, enter a reverse url `com.gp.firebasesignin` it's the same value for <span style="color:orange">
-**package**</span> in `app.json`
+**package**</span> in `app.config.js`
 3. The nickname can be anything, I named it `Firebase Signin`
 4. The <span style="color:orange"> SHA-1</span> needs to be generated in the terminal
     - Open terminal and run `eas build:configure` this will generate `eas.json`
@@ -239,7 +242,9 @@ Run two commands below :
 
 #### [Build for Simulator Android/iOS](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-emulatorsimulator)
 
-No preview or production builds just development builds
+No preview or production builds just development builds. There are two critical steps in getting a build to run on a device or simulator.
+  1. Install the build on the device or virtual device
+  2. Run the dev server (not expo go on the development build installed on the phone)
 
 ### iOS
 
@@ -261,9 +266,9 @@ No preview or production builds just development builds
 
 ### Build For Android emulator and real device 
   - Development build on Android simulator: `eas build -p android --profile development`
-  - With real device scan barcode to get the build installed  on the device
+  - With real device scan barcode to get the build installed  on the device  If this doesn't work try logging into expo on the device and long press the install build button
   - `npx expo start --dev-client`
-  - Scan the barcode again with real device otherwise press a for emulator
+  - Scan the barcode again with real device, if it didn't already start up.
   - If you want to use the emulator press a
 
 ### Build For iOS simulator 
@@ -300,6 +305,12 @@ No preview or production builds just development builds
       #### If you don't have an account yet 
       - alternatively can connect to a mac with xcode see the link [connect to ios device with mac](https://docs.expo.dev/guides/ios-developer-mode/#connect-an-ios-device-with-a-mac)
 
+
+
+## User Flow
+
+## Demo
+[Back to Top](#table-of-contents )
 ## Resources
 
 **video**

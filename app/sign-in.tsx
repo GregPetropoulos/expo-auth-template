@@ -1,58 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import { Link, router } from 'expo-router';
+import { Link} from 'expo-router';
 import { TextInput, View, Text } from '@/components/Themed';
 import { StyleSheet } from 'react-native';
 import Button from '@/components/Button';
 import { useSession } from '@/store/context/authCtx';
 import { KyBoardTypes } from '@/enums/enums';
-import {
-  GoogleSignin,
-  GoogleSigninButton
-} from '@react-native-google-signin/google-signin';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+
+//TODO VALIDATION
 
 export default function SignIn() {
-  const [error, setError] = useState(null); //google sign in
-  const [userInfo, setUserInfo] = useState<any>(null); //google sign in
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn, isLoading } = useSession();
-
-  {
-    /*
-   ======Google Sign in======
-        ===================
-        ===================
-         Needs to be imp with ctx 
-         ==================
-         ==================
-         */
-  }
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '685384373741-4a8ti7ro9rtmqs7psn0rf7tbuq99ur9l.apps.googleusercontent.com'
-    }); //values from the google-services.json file
-  }, []);
-
-  const googleSignIn = async (): Promise<void> => {
-    try {
-      await GoogleSignin.hasPlayServices();
-
-      const user: any = await GoogleSignin.signIn();
-      setUserInfo(user);
-      setError(null);
-    } catch (e: any) {
-      setError(e);
-    }
-  };
-
-  const googleLogout = (): void => {
-    setUserInfo(null);
-    GoogleSignin.revokeAccess();
-    GoogleSignin.signOut();
-  };
-  // ======Google Sign in======
+  const { onSignIn, onGoogleSignIn, error, isLoading } = useSession();
 
   if (isLoading) {
     return (
@@ -80,25 +41,13 @@ export default function SignIn() {
          ==================
          */}
         <Text>Google Sign in</Text>
+        {/* Show a modal for the error */}
         <Text>{JSON.stringify({ error })}</Text>
-        {userInfo && <Text>{JSON.stringify(userInfo.user)}</Text>}
-        {userInfo ? (
-          <Button onPress={googleLogout}>Logout</Button>
-        ) : (
-          <GoogleSigninButton
-            size={GoogleSigninButton.Size.Standard}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={googleSignIn}
-          />
-        )}
-
-        {/*
-        ===================
-        ===================
-         Needs to be imp with ctx 
-         ==================
-         ==================
-         */}
+        <GoogleSigninButton
+          size={GoogleSigninButton.Size.Standard}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={onGoogleSignIn}
+        />
 
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Username</Text>
@@ -127,13 +76,13 @@ export default function SignIn() {
         <Button
           style={{ width: '50%' }}
           onPress={() => {
-            signIn({
+            onSignIn({
               username,
               password
             });
             // Navigate after signing in. You may want to tweak this to ensure sign-in is
             // successful before navigating.
-            router.replace('/');
+            // router.replace('/');
           }}>
           Sign in
         </Button>
