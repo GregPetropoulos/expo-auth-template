@@ -1,5 +1,6 @@
-import { View, Text } from './Themed';
 import { Image, useWindowDimensions } from 'react-native';
+
+import { View, Text } from './Themed';
 
 interface UserProps {
   userData: {
@@ -23,12 +24,7 @@ const User = ({ userData }: UserProps) => {
         alignItems: 'center'
       }}>
       <Text style={{ marginVertical: 6 }}>{name}</Text>
-      <Image
-        source={{ uri: photo }}
-        height={width / 2}
-        width={width / 2}
-        resizeMode='contain'
-      />
+      <Image source={{ uri: photo }} height={width / 2} width={width / 2} resizeMode='contain' />
       <Text style={{ marginVertical: 6 }}>{email}</Text>
     </View>
   );

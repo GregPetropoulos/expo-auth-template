@@ -2,7 +2,7 @@
   "cli": {
     "version": ">= 7.8.0"
   },
-  "build": { 
+  "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal",

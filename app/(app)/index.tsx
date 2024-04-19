@@ -1,7 +1,8 @@
-import { View, Text } from '@/components/Themed';
-import Button from '@/components/Button';
-import { useSession } from '@/store/context/authCtx';
 import User from '../../components/User';
+
+import Button from '@/components/Button';
+import { View, Text } from '@/components/Themed';
+import { useSession } from '@/store/context/authCtx';
 
 export default function Index() {
   const { userInfo, isLoading, onSignOut } = useSession();

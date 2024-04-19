@@ -1,16 +1,19 @@
-import { Pressable,StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
+
 import { Text, View } from './Themed';
 
 interface ButtonProps {
-  children:string;
-  onPress:()=>void;
-  style?:Object
+  children: string;
+  onPress: () => void;
+  style?: object;
+  disabled?: boolean;
 }
-const Button = ({style, children, onPress }:ButtonProps) => {
+const Button = ({ style, children, onPress, disabled }: ButtonProps) => {
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed,style]}
-      onPress={onPress}>
+      style={({ pressed }) => [styles.button, pressed && styles.pressed, style]}
+      onPress={onPress}
+      disabled={disabled}>
       <View>
         <Text style={styles.buttonText}>{children}</Text>
       </View>
@@ -29,14 +32,14 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowRadius: 4
   },
   pressed: {
     opacity: 0.7
   },
   buttonText: {
     textAlign: 'center',
-    backgroundColor:'blue',
+    backgroundColor: 'blue',
     fontSize: 16,
     fontWeight: '600'
   }

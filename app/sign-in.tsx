@@ -1,12 +1,12 @@
-import { useState } from 'react';
-
-import { Link} from 'expo-router';
-import { TextInput, View, Text } from '@/components/Themed';
-import { StyleSheet } from 'react-native';
-import Button from '@/components/Button';
-import { useSession } from '@/store/context/authCtx';
-import { KyBoardTypes } from '@/enums/enums';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import { Link } from 'expo-router';
+import { useState } from 'react';
+import { StyleSheet } from 'react-native';
+
+import Button from '@/components/Button';
+import { TextInput, View, Text } from '@/components/Themed';
+// import { KyBoardTypes } from '@/enums/enums';
+import { useSession } from '@/store/context/authCtx';
 
 //TODO VALIDATION
 
@@ -23,7 +23,7 @@ export default function SignIn() {
     );
   }
 
-  let isInvalid = false; //TODO VALIDATION
+  const isInvalid = false; //TODO VALIDATION
   return (
     <View
       style={{
@@ -33,13 +33,6 @@ export default function SignIn() {
       }}>
       <View style={styles.form}>
         <Text style={styles.title}>App Sign In</Text>
-        {/*
-        ===================
-        ===================
-         Needs to be imp with ctx 
-         ==================
-         ==================
-         */}
         <Text>Google Sign in</Text>
         {/* Show a modal for the error */}
         <Text>{JSON.stringify({ error })}</Text>
@@ -47,6 +40,7 @@ export default function SignIn() {
           size={GoogleSigninButton.Size.Standard}
           color={GoogleSigninButton.Color.Dark}
           onPress={onGoogleSignIn}
+          disabled={password.length > 0 || username.length > 0}
         />
 
         <View style={styles.inputContainer}>
@@ -83,7 +77,8 @@ export default function SignIn() {
             // Navigate after signing in. You may want to tweak this to ensure sign-in is
             // successful before navigating.
             // router.replace('/');
-          }}>
+          }}
+          disabled={isInvalid}>
           Sign in
         </Button>
         <View style={styles.bottomTextContainer}>

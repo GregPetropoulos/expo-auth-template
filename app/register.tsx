@@ -1,12 +1,10 @@
-import { useState } from 'react';
-
 import { Link, router } from 'expo-router';
-import { TextInput, View, Text } from '@/components/Themed';
+import { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import Button from '@/components/Button';
-import { useSession } from '@/store/context/authCtx';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import Button from '@/components/Button';
+import { TextInput, View, Text } from '@/components/Themed';
+import { useSession } from '@/store/context/authCtx';
 
 export default function Register() {
   const [username, setUsername] = useState('');
@@ -14,8 +12,7 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
-  const { register, isLoading } = useSession();
-const insets = useSafeAreaInsets()
+  const { onRegister, isLoading } = useSession();
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -24,19 +21,24 @@ const insets = useSafeAreaInsets()
     );
   }
 
-  let isInvalid = false;//TODO 
+  const isInvalid = false; //TODO
 
   const registerHandler = () => {
     // Check all these values for validation
+    const validUsername = '';
+    const validPassword = '';
+    const validConfirmPassword = '';
+    const vaildEmail = '';
+    const validConfirmEmail = '';
     const validUserData = {
-      username: username,
-      password: password,
-      confirmPassword: confirmPassword,
-      email: email,
-      confirmEmail: confirmEmail
+      username: validUsername,
+      password: validPassword,
+      confirmPassword: validConfirmPassword,
+      email: vaildEmail,
+      confirmEmail: validConfirmEmail
     };
 
-    register(validUserData);
+    onRegister(validUserData);
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.
     router.replace('/');
@@ -46,7 +48,7 @@ const insets = useSafeAreaInsets()
     <ScrollView
       contentContainerStyle={{
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
       }}>
       <View style={styles.form}>
         <Text style={styles.title}>App Sign In</Text>
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 20,
-    paddingTop:40
+    paddingTop: 40
   },
   inputContainer: {
     marginVertical: 16,

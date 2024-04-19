@@ -9,8 +9,9 @@ import {
   TextInput as DefaultTextInput
 } from 'react-native';
 
-import Colors from '@/constants/Colors';
 import { useColorScheme } from './useColorScheme';
+
+import Colors from '@/constants/Colors';
 
 type ThemeProps = {
   lightColor?: string;
@@ -44,29 +45,17 @@ export function Text(props: TextProps) {
 
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
-  const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    'background'
-  );
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
 export function TextInput(props: TextInputProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
-  const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    'background'
-  );
+  // const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
   const color = useThemeColor({ dark: lightColor, light: darkColor }, 'text');
-  const borderColor = useThemeColor(
-    { dark: lightColor, light: darkColor },
-    'borderColor'
-  );
+  const borderColor = useThemeColor({ dark: lightColor, light: darkColor }, 'borderColor');
 
   return (
-    <DefaultTextInput
-      style={[{ color, borderColor, borderWidth: 0.5 }, style]}
-      {...otherProps}
-    />
+    <DefaultTextInput style={[{ color, borderColor, borderWidth: 0.5 }, style]} {...otherProps} />
   );
 }

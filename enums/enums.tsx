@@ -1,4 +1,4 @@
 export enum KyBoardTypes {
-  Default='default',
+  Default = 'default',
   EmailAddress = 'email-address'
 }

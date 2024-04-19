@@ -1,17 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider
-} from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { Slot } from 'expo-router';
-import { SessionProvider } from '@/store/context/authCtx';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '@/components/useColorScheme';
-import { SafeAreaProvider} from 'react-native-safe-area-context';
+import { SessionProvider } from '@/store/context/authCtx';
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary
@@ -57,7 +54,7 @@ function RootLayoutNav() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <SessionProvider>
           <SafeAreaProvider>
-              <Slot />
+            <Slot />
           </SafeAreaProvider>
         </SessionProvider>
         {/* <Stack>

@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useStorageState } from '@/hooks/useStorageState';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { Link, router } from 'expo-router';
+import React, { useState, useEffect } from 'react';
 
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes
-} from '@react-native-google-signin/google-signin';
+import { useStorageState } from '@/hooks/useStorageState';
 
 interface UserData {
   username: string;
@@ -20,7 +16,7 @@ interface UserData {
 interface UserInfo {
   idToken: string;
   serverAuthCode: string;
-  scopes: Array<string>;
+  scopes: string[];
   user: {
     email: string;
     id: string;
@@ -37,7 +33,7 @@ const AuthContext = React.createContext<{
   onRegister: (userData: UserData) => void;
   session?: string | null;
   isLoading: boolean;
-  error: {} | null;
+  error: object | null;
   userInfo: UserInfo;
 }>({
   onGoogleSignIn: () => null,
@@ -81,8 +77,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId:
-        '685384373741-4a8ti7ro9rtmqs7psn0rf7tbuq99ur9l.apps.googleusercontent.com'
+      webClientId: '685384373741-4a8ti7ro9rtmqs7psn0rf7tbuq99ur9l.apps.googleusercontent.com'
     }); //values from the google-services.json file
   }, []);
 
@@ -119,28 +114,23 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const signIn = (userData: UserData) => {
     // TODO Perform sign-in logic here
 
-    const userCreds = {
-      username: userData.username,
-      password: userData.password,
-      date: new Date()
-    };
-
     // Send the userData to the backend or auth provider to check credentials and set the user info and token
     if (userData.username === 'test') {
-      const mockUser ={
-          idToken: '',
-          serverAuthCode: '',
-          scopes: [],
-          user: {
-            email: 'test@email.com',
-            id: '123id',
-            givenName: 'John',
-            familyName: 'Doe',
-            photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D', // url
-            name: 'John Doe' // full name
+      const mockUser = {
+        idToken: '',
+        serverAuthCode: '',
+        scopes: [],
+        user: {
+          email: 'test@email.com',
+          id: '123id',
+          givenName: 'John',
+          familyName: 'Doe',
+          photo:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D', // url
+          name: 'John Doe' // full name
         }
-      }
-      setUserInfo(mockUser)
+      };
+      setUserInfo(mockUser);
       setSession('xxx'); //temp for testing
       router.replace('/');
     }
