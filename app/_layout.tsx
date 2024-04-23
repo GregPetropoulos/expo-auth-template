@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { View } from '@/components/Themed';
 import { useColorScheme } from '@/components/useColorScheme';
 import { SessionProvider } from '@/store/context/authCtx';
 
@@ -51,16 +52,24 @@ function RootLayoutNav() {
   return (
     <>
       {/* <StatusBar/> */}
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <SessionProvider>
-          <SafeAreaProvider>
-            <Slot />
-          </SafeAreaProvider>
-        </SessionProvider>
-        {/* <Stack>
+      <SafeAreaProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <SessionProvider>
+            <View
+              style={{
+                flex: 1,
+                paddingTop: 40,
+                paddingBottom: 0,
+                paddingHorizontal: 8
+              }}>
+              <Slot />
+            </View>
+          </SessionProvider>
+          {/* <Stack>
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
       </Stack> */}
-      </ThemeProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
     </>
   );
 }

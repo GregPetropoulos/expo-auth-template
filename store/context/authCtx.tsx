@@ -5,10 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { useStorageState } from '@/hooks/useStorageState';
 
 interface UserData {
-  username: string;
+  email: string;
   password: string;
   confirmPassword?: string;
-  email?: string;
   confirmEmail?: string;
 }
 
@@ -26,6 +25,9 @@ interface UserInfo {
     name: string; // full name
   };
 }
+interface Error {
+  message: string;
+}
 const AuthContext = React.createContext<{
   onGoogleSignIn: () => void;
   onSignIn: (userData: UserData) => void;
@@ -33,7 +35,7 @@ const AuthContext = React.createContext<{
   onRegister: (userData: UserData) => void;
   session?: string | null;
   isLoading: boolean;
-  error: object | null;
+  signInError: Error | null;
   userInfo: UserInfo;
 }>({
   onGoogleSignIn: () => null,
@@ -42,7 +44,7 @@ const AuthContext = React.createContext<{
   onRegister: () => null,
   session: null,
   isLoading: false,
-  error: null,
+  signInError: null,
   userInfo: {
     idToken: '',
     serverAuthCode: '',
@@ -72,7 +74,7 @@ export function useSession() {
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState('session');
-  const [error, setError] = useState(null);
+  const [signInError, setSignInError] = useState<Error | null>(null);
   const [userInfo, setUserInfo] = useState<any>(null);
 
   useEffect(() => {
@@ -82,6 +84,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   }, []);
 
   const googleSignIn = async (): Promise<void> => {
+    // setSignInError({ message: 'heyy' });
     try {
       await GoogleSignin.hasPlayServices();
 
@@ -91,10 +94,10 @@ export function SessionProvider(props: React.PropsWithChildren) {
         //can only log to a route when the session is set
         setSession('yyy');
         router.replace('/');
-        setError(null);
+        setSignInError(null);
       }
     } catch (er: any) {
-      setError(er);
+      setSignInError(er.message ?? { message: 'See context for error' });
       if (er instanceof Error) {
         console.log(er);
         if (er.message === statusCodes.SIGN_IN_CANCELLED) {
@@ -113,15 +116,14 @@ export function SessionProvider(props: React.PropsWithChildren) {
   // USER ENTERS VALUES NO 3RD PARTY AUTH
   const signIn = (userData: UserData) => {
     // TODO Perform sign-in logic here
-
     // Send the userData to the backend or auth provider to check credentials and set the user info and token
-    if (userData.username === 'test') {
+    if (userData.email === 'test@test.com') {
       const mockUser = {
         idToken: '',
         serverAuthCode: '',
         scopes: [],
         user: {
-          email: 'test@email.com',
+          email: 'test@test.com',
           id: '123id',
           givenName: 'John',
           familyName: 'Doe',
@@ -160,7 +162,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         onRegister: register,
         session,
         isLoading,
-        error,
+        signInError,
         userInfo
       }}>
       {props.children}

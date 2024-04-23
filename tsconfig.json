@@ -8,7 +8,13 @@
       "@/*": ["./*"]
     }
   },
-
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "ts-node/register", "app.config.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "ts-node/register",
+    "app.config.ts"
+  ],
   "exclude": ["node_modules"]
 }

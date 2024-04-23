@@ -1,27 +1,44 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import {
+  InputModeOptions,
+  KeyboardTypeOptions,
+  ReturnKeyTypeOptions,
+  StyleSheet
+} from 'react-native';
 
 import { Text, View, TextInput } from './Themed';
 
-import { KyBoardTypes } from '@/enums/enums';
-
 type InputProps = {
   label?: string | undefined;
-  keyboardType?: KyBoardTypes;
+  keyboardType?: KeyboardTypeOptions;
   secure?: boolean;
-  onUpdateValue: any;
+  onChangeHandleText: any;
   value: string;
   isInvalid?: boolean; //TODO CHANGE THIS AFTER IMPLEMENT VALIDATION
   placeholder?: string;
+  maxLength?: number;
+  returnKeyType?: ReturnKeyTypeOptions;
+  placeholderTextColor?: string;
+  inputMode?: InputModeOptions;
+  onEndEditing?: () => void;
+  onSubmitEditing?: () => void;
+  blurOnSubmit?: boolean;
 };
 const Input = ({
   label,
   keyboardType,
+  inputMode,
   secure,
-  onUpdateValue,
+  onChangeHandleText,
   value,
   isInvalid,
-  placeholder
+  placeholder,
+  maxLength,
+  returnKeyType,
+  placeholderTextColor,
+  onEndEditing,
+  onSubmitEditing,
+  blurOnSubmit
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
@@ -29,11 +46,20 @@ const Input = ({
       <TextInput
         style={[styles.input, isInvalid && styles.inputInvalid]}
         autoCapitalize='none'
+        autoComplete='off'
+        autoCorrect={false}
+        maxLength={maxLength}
+        returnKeyType={returnKeyType}
+        inputMode={inputMode}
         keyboardType={keyboardType}
         secureTextEntry={secure}
-        onChangeText={onUpdateValue}
+        onChangeText={onChangeHandleText}
         value={value}
         placeholder={placeholder}
+        placeholderTextColor={placeholderTextColor}
+        blurOnSubmit={false}
+        onEndEditing={onEndEditing}
+        onSubmitEditing={onSubmitEditing}
       />
     </View>
   );
@@ -46,8 +72,9 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   label: {
-    color: 'white',
-    marginBottom: 4
+    marginBottom: 8,
+    fontSize: 18,
+    fontWeight: '600'
   },
   labelInvalid: {
     color: 'red' //Make part of theme later
@@ -55,10 +82,10 @@ const styles = StyleSheet.create({
   input: {
     paddingVertical: 8,
     paddingHorizontal: 6,
-    // backgroundColor: Colors.primary10,
     borderRadius: 4,
     fontSize: 18,
-    fontWeight: '600'
+    fontWeight: '600',
+    minHeight: 60
   },
   inputInvalid: {
     backgroundColor: 'red' //Make part of theme later
