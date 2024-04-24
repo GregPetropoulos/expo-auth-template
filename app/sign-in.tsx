@@ -1,32 +1,31 @@
+// Libs
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { Link } from 'expo-router';
-import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import { StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 
+// Custom Components, Hooks etc...
 import Button from '@/components/Button';
 import Error from '@/components/Error';
 import HorizontalLine from '@/components/HorizontalLine';
 import Input from '@/components/Input';
 import { View, Text } from '@/components/Themed';
+import useHidePassword from '@/hooks/useHidePassword';
 import { useSession } from '@/store/context/authCtx';
-
-type SignInForm = {
-  email: string;
-  password: string;
-};
+import { UserAuthCreds } from '@/types';
 
 export default function SignIn() {
-  const [hidePassword, setHidePassword] = useState(true);
   const { onSignIn, onGoogleSignIn, signInError, isLoading } = useSession();
-  const { control, handleSubmit } = useForm<SignInForm>();
+  const { control, handleSubmit } = useForm<UserAuthCreds>();
 
-  const onPressHidePassword = () => setHidePassword(!hidePassword);
+  const { hidePassword, onPressHidePassword } = useHidePassword();
 
   const onSubmitSignIn = handleSubmit(({ password, email }) => {
     // submit form to server via context
     onSignIn({ email, password });
   });
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -74,18 +73,27 @@ export default function SignIn() {
                 name='password'
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <>
-                    <Input
-                      label='Password'
-                      returnKeyType='send'
-                      inputMode='text'
-                      maxLength={10}
-                      placeholder='enter password'
-                      placeholderTextColor='grey'
-                      secure={hidePassword}
-                      value={value}
-                      onChangeHandleText={onChange}
-                      onSubmitEditing={onSubmitSignIn}
-                    />
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Input
+                        label='Password'
+                        returnKeyType='send'
+                        inputMode='text'
+                        maxLength={10}
+                        placeholder='enter password'
+                        placeholderTextColor='grey'
+                        secure={hidePassword}
+                        value={value}
+                        onChangeHandleText={onChange}
+                        onSubmitEditing={onSubmitSignIn}
+                      />
+                      <Ionicons
+                        name={hidePassword ? 'eye-off' : 'eye'}
+                        style={{ marginLeft: 3, marginTop: 25 }}
+                        size={25}
+                        color='grey'
+                        onPress={onPressHidePassword}
+                      />
+                    </View>
                     {error && <Error>{error.message}</Error>}
                   </>
                 )}
@@ -137,7 +145,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginVertical: 16,
     // marginHorizontal: 8,
-    width: '100%'
+    width: '90%'
   },
   title: {
     fontSize: 28

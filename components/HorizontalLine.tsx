@@ -2,11 +2,9 @@ import React from 'react';
 
 import { View } from './Themed';
 
-interface Props {
-  children: React.ReactNode;
-}
+import { ChildrenProps } from '@/types';
 
-const HorizontalLine = ({ children }: Props) => {
+const HorizontalLine = ({ children }: ChildrenProps) => {
   return (
     <View
       style={{

@@ -5,7 +5,7 @@ import { View, Text } from '@/components/Themed';
 import { useSession } from '@/store/context/authCtx';
 
 export default function Index() {
-  const { userInfo, isLoading, onSignOut } = useSession();
+  const { isLoading, onSignOut } = useSession();
 
   const signoutHandler = () => {
     // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
@@ -23,7 +23,7 @@ export default function Index() {
       <Text style={{ fontSize: 36, marginVertical: 20, textAlign: 'center' }}>
         Welcome You are authenticated
       </Text>
-      <User userData={userInfo?.user} />
+      <User />
       <Button onPress={signoutHandler}>Sign Out</Button>
     </View>
   );

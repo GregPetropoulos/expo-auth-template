@@ -1,32 +1,38 @@
-import { Image, useWindowDimensions } from 'react-native';
+import { Image, useWindowDimensions, StyleSheet } from 'react-native';
 
 import { View, Text } from './Themed';
 
-interface UserProps {
-  userData: {
-    email: string;
-    id: string;
-    photo: string; // url
-    name: string; // full name
-  };
-}
-const User = ({ userData }: UserProps) => {
+import { useSession } from '@/store/context/authCtx';
+
+const User = () => {
+  const { userInfo } = useSession();
   const { width } = useWindowDimensions();
-  const { name, email, photo } = userData;
+
   return (
-    <View
-      style={{
-        width: '100%',
-        borderColor: 'red',
-        borderWidth: 2,
-        marginVertical: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-      <Text style={{ marginVertical: 6 }}>{name}</Text>
-      <Image source={{ uri: photo }} height={width / 2} width={width / 2} resizeMode='contain' />
-      <Text style={{ marginVertical: 6 }}>{email}</Text>
+    <View style={styles.container}>
+      <Text style={styles.username}>{userInfo?.username}</Text>
+      <Image
+        source={
+          userInfo?.photo ? { uri: userInfo?.photo } : require('../assets/images/favicon.png')
+        }
+        height={width / 2}
+        width={width / 2}
+        resizeMode='contain'
+      />
+      <Text style={styles.email}>{userInfo?.email}</Text>
     </View>
   );
 };
 export default User;
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    borderColor: 'red',
+    borderWidth: 2,
+    marginVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  username: { marginVertical: 6 },
+  email: { marginVertical: 6 }
+});

@@ -1,29 +1,10 @@
 import React from 'react';
-import {
-  InputModeOptions,
-  KeyboardTypeOptions,
-  ReturnKeyTypeOptions,
-  StyleSheet
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { Text, View, TextInput } from './Themed';
 
-type InputProps = {
-  label?: string | undefined;
-  keyboardType?: KeyboardTypeOptions;
-  secure?: boolean;
-  onChangeHandleText: any;
-  value: string;
-  isInvalid?: boolean; //TODO CHANGE THIS AFTER IMPLEMENT VALIDATION
-  placeholder?: string;
-  maxLength?: number;
-  returnKeyType?: ReturnKeyTypeOptions;
-  placeholderTextColor?: string;
-  inputMode?: InputModeOptions;
-  onEndEditing?: () => void;
-  onSubmitEditing?: () => void;
-  blurOnSubmit?: boolean;
-};
+import { InputProps } from '@/types';
+
 const Input = ({
   label,
   keyboardType,
@@ -38,7 +19,6 @@ const Input = ({
   placeholderTextColor,
   onEndEditing,
   onSubmitEditing,
-  blurOnSubmit
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
@@ -57,7 +37,6 @@ const Input = ({
         value={value}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
-        blurOnSubmit={false}
         onEndEditing={onEndEditing}
         onSubmitEditing={onSubmitEditing}
       />

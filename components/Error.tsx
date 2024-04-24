@@ -2,13 +2,9 @@ import React from 'react';
 
 import { Text, View } from './Themed';
 
-interface Props {
-  children: React.ReactNode;
-  fontSize?: number;
-  color?: string;
-}
+import { ErrorProps } from '@/types';
 
-const Error = ({ children, fontSize, color }: Props) => {
+const Error = ({ children, fontSize, color }: ErrorProps) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: fontSize ?? 16, color: color ?? 'red' }}>{children}</Text>

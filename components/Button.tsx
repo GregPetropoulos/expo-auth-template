@@ -2,14 +2,8 @@ import { Pressable, StyleSheet } from 'react-native';
 
 import { Text } from './Themed';
 
-interface ButtonProps {
-  children: string;
-  onPress: () => void;
-  style?: object;
-  disabled?: boolean;
-  buttonTextSize?: number;
-  buttonColor?: string;
-}
+import { ButtonProps } from '@/types';
+
 const Button = ({
   buttonTextSize,
   buttonColor,
