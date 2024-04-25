@@ -1,10 +1,10 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
+import * as yup from 'yup';
 
-//todo validate
-//todo check form values get to the server
 //todo check both devices
 
 import Button from '@/components/Button';
@@ -13,12 +13,37 @@ import Input from '@/components/Input';
 import { View, Text } from '@/components/Themed';
 import useHidePassword from '@/hooks/useHidePassword';
 import { useSession } from '@/store/context/authCtx';
-import { UserAuthCreds } from '@/types';
 
 export default function Register() {
-  const { onRegister, isLoading } = useSession();
-  const { control, handleSubmit } = useForm<UserAuthCreds>();
+  const { onRegister, isLoading, signInError } = useSession();
   const { hidePassword, onPressHidePassword } = useHidePassword();
+  const schema = yup.object().shape({
+    username: yup.string(),
+    email: yup.string().required('Email is required').email('Invalid email'),
+    confirmEmail: yup.string().required('Confirm Email is required').email('Invalid email'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(6, 'Password must contain between 6 and 10 characters'),
+    confirmPassword: yup
+      .string()
+      .required('Confirm Password is required')
+      .min(6, 'Confirm Password must contain between 6 and 10 characters')
+  });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      username: '',
+      email: '',
+      confirmEmail: '',
+      password: '',
+      confirmPassword: ''
+    }
+  });
 
   if (isLoading) {
     return (
@@ -28,14 +53,11 @@ export default function Register() {
     );
   }
 
-  const isInvalid = false; //TODO
-
-  const registerHandler = handleSubmit(
-    ({ username, email, confirmEmail, password, confirmPassword }) => {
-      // submit form to server via context only if validated data
-      onRegister({ username, email, confirmEmail, password, confirmPassword });
-    }
-  );
+  const registerHandler = handleSubmit(({ username, email, password }) => {
+    // submit form to server via context only if validated data
+    // Yup validated data gets sent to context then to server for a response token
+    onRegister({ username, email, password });
+  });
 
   return (
     <KeyboardAvoidingView
@@ -44,12 +66,13 @@ export default function Register() {
       <View style={{ flex: 1 }}>
         <ScrollView keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}>
           <View style={styles.form}>
-            <Text style={styles.title}>App Sign In</Text>
+            <Text style={styles.title}>App Register User</Text>
             <View style={styles.inputContainer}>
               <Controller
                 control={control}
+                rules={{ required: true }}
                 name='username'
-                render={({ field: { onChange, value }, fieldState: { error } }) => {
+                render={({ field: { onChange, value } }) => {
                   return (
                     <>
                       <Input
@@ -62,18 +85,19 @@ export default function Register() {
                         value={value}
                         onChangeHandleText={onChange}
                       />
-                      {error && <Error>{error.message}</Error>}
                     </>
                   );
                 }}
-                rules={{ required: 'Enter your username' }}
               />
             </View>
             <View style={styles.inputContainer}>
               <Controller
                 control={control}
+                rules={{
+                  required: true
+                }}
                 name='email'
-                render={({ field: { onChange, value }, fieldState: { error } }) => {
+                render={({ field: { onChange, value } }) => {
                   return (
                     <>
                       <Input
@@ -86,18 +110,20 @@ export default function Register() {
                         value={value}
                         onChangeHandleText={onChange}
                       />
-                      {error && <Error>{error.message}</Error>}
+                      {errors.email && <Error>{errors.email.message}</Error>}
                     </>
                   );
                 }}
-                rules={{ required: 'Enter your email' }}
               />
             </View>
             <View style={styles.inputContainer}>
               <Controller
                 control={control}
+                rules={{
+                  required: true
+                }}
                 name='confirmEmail'
-                render={({ field: { onChange, value }, fieldState: { error } }) => {
+                render={({ field: { onChange, value } }) => {
                   return (
                     <>
                       <Input
@@ -110,18 +136,20 @@ export default function Register() {
                         value={value}
                         onChangeHandleText={onChange}
                       />
-                      {error && <Error>{error.message}</Error>}
+                      {errors.confirmEmail && <Error>{errors.confirmEmail.message}</Error>}
                     </>
                   );
                 }}
-                rules={{ required: 'Enter your confirmation email' }}
               />
             </View>
             <View style={styles.inputContainer}>
               <Controller
                 control={control}
+                rules={{
+                  required: true
+                }}
                 name='password'
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, value } }) => (
                   <>
                     <Input
                       label='Password'
@@ -134,49 +162,55 @@ export default function Register() {
                       secure={hidePassword}
                       onChangeHandleText={onChange}
                     />
-
-                    {error && <Error>{error.message}</Error>}
+                    {errors.password && <Error>{errors.password.message}</Error>}
                   </>
                 )}
-                rules={{ required: 'Enter Password' }}
               />
             </View>
             <View style={styles.inputContainer}>
               <Controller
                 control={control}
+                rules={{
+                  required: true
+                }}
                 name='confirmPassword'
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, value } }) => (
                   <>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Input
-                        label=' Confirm Password'
-                        returnKeyType='send'
-                        inputMode='text'
-                        maxLength={10}
-                        placeholder='enter confirmed password'
-                        placeholderTextColor='grey'
-                        value={value}
-                        secure={hidePassword}
-                        onChangeHandleText={onChange}
-                      />
-                      <Ionicons
-                        name={hidePassword ? 'eye-off' : 'eye'}
-                        style={{ marginLeft: 3, marginTop: 25 }}
-                        size={25}
-                        color='grey'
-                        onPress={onPressHidePassword}
-                      />
-                    </View>
-                    {error && <Error>{error.message}</Error>}
+                    <Input
+                      label=' Confirm Password'
+                      returnKeyType='send'
+                      inputMode='text'
+                      maxLength={10}
+                      placeholder='enter confirmed password'
+                      placeholderTextColor='grey'
+                      value={value}
+                      secure={hidePassword}
+                      onChangeHandleText={onChange}
+                      onSubmitEditing={registerHandler}
+                      icon={
+                        <Ionicons
+                          name={hidePassword ? 'eye-off' : 'eye'}
+                          style={{ marginRight: 4 }}
+                          size={25}
+                          color='grey'
+                          onPress={onPressHidePassword}
+                        />
+                      }
+                    />
+                    {errors.confirmPassword && <Error>{errors.confirmPassword.message}</Error>}
                   </>
                 )}
-                rules={{ required: 'Enter your confirmation password' }}
               />
             </View>
-            <Button style={{ width: '50%' }} onPress={registerHandler}>
-              Register
-            </Button>
+            {signInError !== null && (
+              <Error
+                fontSize={18}
+                color='red'>{`Sign in error: ${signInError.message ?? 'Not Authorized'}`}</Error>
+            )}
             <View style={styles.bottomTextContainer}>
+              <Button style={styles.buttonStyle} onPress={registerHandler}>
+                Register
+              </Button>
               <Text>Already have an account?</Text>
               <Link href='/sign-in'>
                 <Text style={styles.linkText}>Sign in </Text>
@@ -196,37 +230,24 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginVertical: 16,
-    // marginHorizontal: 8,
-    width: '90%'
+    width: '100%'
   },
   title: {
     fontSize: 28
   },
-  label: {
-    marginBottom: 8,
-    fontSize: 22
-  },
-  labelInvalid: {
-    color: 'red' //Make part of theme later
-  },
-  input: {
-    paddingVertical: 8,
-    paddingHorizontal: 6,
-    // backgroundColor: Colors.primary10,
-    borderRadius: 4,
-    fontSize: 18,
-    fontWeight: '600',
-    minHeight: 60
-  },
-  inputInvalid: {
-    backgroundColor: 'red' //Make part of theme later
-  },
   bottomTextContainer: {
-    marginVertical: 20
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 30,
+    width: '100%'
   },
   linkText: {
     textDecorationLine: 'underline',
     color: 'grey',
     opacity: 0.8
+  },
+  buttonStyle: {
+    marginBottom: 15,
+    width: '100%'
   }
 });

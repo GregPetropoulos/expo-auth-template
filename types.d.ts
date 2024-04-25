@@ -1,3 +1,4 @@
+import { ComponentType, ReactElement, ReactNode } from 'react';
 import { InputModeOptions, KeyboardTypeOptions, ReturnKeyTypeOptions } from 'react-native';
 
 export type InputProps = {
@@ -15,6 +16,7 @@ export type InputProps = {
   onEndEditing?: () => void;
   onSubmitEditing?: () => void;
   blurOnSubmit?: boolean;
+  icon?: ReactElement;
 };
 
 export interface ButtonProps {
@@ -39,15 +41,13 @@ export interface User {
   username: string; // full name
   photo?: string; // url
   email: string;
-  id: string;// get id from backend
+  id: string; // get id from backend
 }
 
 export interface UserAuthCreds {
   username?: string;
   email: string;
-  confirmEmail?: string;
   password: string;
-  confirmPassword?: string;
 }
 
 // based off the google userinfo

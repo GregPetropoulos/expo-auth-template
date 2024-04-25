@@ -12,34 +12,37 @@ const Input = ({
   secure,
   onChangeHandleText,
   value,
-  isInvalid,
   placeholder,
   maxLength,
   returnKeyType,
   placeholderTextColor,
   onEndEditing,
   onSubmitEditing,
+  icon
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
-      <Text style={[styles.label, isInvalid && styles.labelInvalid]}>{label}</Text>
-      <TextInput
-        style={[styles.input, isInvalid && styles.inputInvalid]}
-        autoCapitalize='none'
-        autoComplete='off'
-        autoCorrect={false}
-        maxLength={maxLength}
-        returnKeyType={returnKeyType}
-        inputMode={inputMode}
-        keyboardType={keyboardType}
-        secureTextEntry={secure}
-        onChangeText={onChangeHandleText}
-        value={value}
-        placeholder={placeholder}
-        placeholderTextColor={placeholderTextColor}
-        onEndEditing={onEndEditing}
-        onSubmitEditing={onSubmitEditing}
-      />
+      <Text style={styles.label}>{label}</Text>
+      <View style={styles.inputIconContainer}>
+        <TextInput
+          style={styles.input}
+          autoCapitalize='none'
+          autoComplete='off'
+          autoCorrect={false}
+          maxLength={maxLength}
+          returnKeyType={returnKeyType}
+          inputMode={inputMode}
+          keyboardType={keyboardType}
+          secureTextEntry={secure}
+          onChangeText={onChangeHandleText}
+          value={value}
+          placeholder={placeholder}
+          placeholderTextColor={placeholderTextColor}
+          onEndEditing={onEndEditing}
+          onSubmitEditing={onSubmitEditing}
+        />
+        {icon}
+      </View>
     </View>
   );
 };
@@ -48,25 +51,28 @@ export default Input;
 const styles = StyleSheet.create({
   inputContainer: {
     marginVertical: 8,
-    width: '100%'
+    flex: 1
   },
   label: {
     marginBottom: 8,
     fontSize: 18,
     fontWeight: '600'
   },
-  labelInvalid: {
-    color: 'red' //Make part of theme later
+  inputIconContainer: {
+    borderColor: 'grey',
+    borderWidth: 1,
+    borderRadius: 4,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   input: {
     paddingVertical: 8,
     paddingHorizontal: 6,
-    borderRadius: 4,
+    borderWidth: 0,
+    flex: 1,
     fontSize: 18,
     fontWeight: '600',
     minHeight: 60
-  },
-  inputInvalid: {
-    backgroundColor: 'red' //Make part of theme later
   }
 });

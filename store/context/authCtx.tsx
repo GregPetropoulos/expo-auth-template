@@ -1,5 +1,5 @@
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import React, { useState, useEffect } from 'react';
 
 import { mockEndpoint } from '@/__mocks__/mock-endpoints';
@@ -47,7 +47,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '685384373741-4a8ti7ro9rtmqs7psn0rf7tbuq99ur9l.apps.googleusercontent.com'
+      webClientId: '685384373741-4a8ti7ro9rtmqs7psn0rf7tbuq99ur9l.apps.googleusercontent.com',
+      profileImageSize: 120
     }); //values from the google-services.json file
   }, []);
 
@@ -67,7 +68,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
           email: userResponse.user.email,
           id: userResponse.idToken
         };
-        console.log('GOOGLE- USER****', googleUser);
         setUserInfo(googleUser);
         //can only log to a route when the session is set
         setSession('gggg');
@@ -95,7 +95,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   // TODO ADD APPLE SIGN IN
 
   // USER ENTERS VALUES NO 3RD PARTY AUTH
-  const signIn = (userData: UserAuthCreds) => {
+  const signIn = async (userData: UserAuthCreds): Promise<void> => {
     //TODO Get token from server
     // TODO Perform sign-in logic here
     // Send the userData to the backend or auth provider to check credentials and set the user info and token
@@ -104,6 +104,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
       setSession('xxx'); //temp for testing
       router.replace('/');
       setSignInError(null);
+    } else {
+      setSignInError({ message: 'Not Authenticated' });
     }
   };
 
@@ -126,19 +128,24 @@ export function SessionProvider(props: React.PropsWithChildren) {
       //  Set user with response token from backend/middleware
       const response = await fetch(mockEndpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        // body: JSON.stringify(userData)
-        body: JSON.stringify(mockUserCreds) //!for testing
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(userData)
+        // body: JSON.stringify(mockUserCreds) //!for testing
       });
-      if (response.ok) {
-        const jwtToken = await response.json();
 
+      if (response.ok) {
+        // const jwtToken = await response.json();
+        const jsonData = await response.json();
+        console.log('RESPONSE', jsonData.data);
+        //setUserInfo(jsonData.data); //make sure to not return the users password from the response
         setUserInfo(mockUser); //use token to get the user data not directly set it here
         setSession('yyyy'); //!temp for testing
+        setSignInError(null);
         router.replace('/');
       } else {
+        setSignInError({ message: response.statusText });
         throw new Error(
-          `Network Error Status: ${response.statusText} Network Error Code: ${response.status}`
+          `Response Error Status: ${response.statusText} Response Error Code: ${response.status}`
         );
       }
     } catch (er: any) {
