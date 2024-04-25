@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'expo-router';
+import { useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import * as yup from 'yup';
@@ -33,7 +34,8 @@ export default function Register() {
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    watch
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -44,6 +46,7 @@ export default function Register() {
       confirmPassword: ''
     }
   });
+  const passwordWatch = watch('password');
 
   if (isLoading) {
     return (
@@ -53,11 +56,15 @@ export default function Register() {
     );
   }
 
-  const registerHandler = handleSubmit(({ username, email, password }) => {
-    // submit form to server via context only if validated data
-    // Yup validated data gets sent to context then to server for a response token
-    onRegister({ username, email, password });
-  });
+  const registerHandler = handleSubmit(
+    ({ username, email, confirmEmail, password, confirmPassword }) => {
+      // submit form to server via context only if validated data
+      // Yup validated data gets sent to context then to server for a response token
+      if (email === confirmEmail && password === confirmPassword) {
+        onRegister({ username, email, password });
+      }
+    }
+  );
 
   return (
     <KeyboardAvoidingView
@@ -198,6 +205,7 @@ export default function Register() {
                       }
                     />
                     {errors.confirmPassword && <Error>{errors.confirmPassword.message}</Error>}
+                    {passwordWatch !== value && <Error>{`Password's don't match`}</Error>}
                   </>
                 )}
               />

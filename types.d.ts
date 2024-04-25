@@ -1,4 +1,4 @@
-import { ComponentType, ReactElement, ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { InputModeOptions, KeyboardTypeOptions, ReturnKeyTypeOptions } from 'react-native';
 
 export type InputProps = {
@@ -7,7 +7,6 @@ export type InputProps = {
   secure?: boolean;
   onChangeHandleText: any;
   value: string | undefined;
-  isInvalid?: boolean; //TODO CHANGE THIS AFTER IMPLEMENT VALIDATION
   placeholder?: string;
   maxLength?: number;
   returnKeyType?: ReturnKeyTypeOptions;
