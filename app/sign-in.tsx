@@ -14,11 +14,11 @@ import HorizontalLine from '@/components/HorizontalLine';
 import Input from '@/components/Input';
 import { View, Text } from '@/components/Themed';
 import useHidePassword from '@/hooks/useHidePassword';
-import { useSession } from '@/store/context/authCtx';
+import { useAuth } from '@/store/context/authCtx';
 import { UserAuthCreds } from '@/types';
 
 export default function SignIn() {
-  const { onSignIn, onGoogleSignIn, signInError, isLoading } = useSession();
+  const { onSignIn, onGoogleSignIn, signInError, loading } = useAuth();
   const { hidePassword, onPressHidePassword } = useHidePassword();
 
   // Validation
@@ -41,12 +41,14 @@ export default function SignIn() {
     }
   });
 
+  // APPLE SIGN IN
+
   const onSubmitSignIn = handleSubmit(({ password, email }: UserAuthCreds) => {
     // Yup validated data gets sent to context then to server for a token
     onSignIn({ email, password });
   });
 
-  if (isLoading) {
+  if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text style={styles.title}>Loading...</Text>

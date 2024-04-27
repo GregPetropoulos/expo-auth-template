@@ -1,7 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'expo-router';
-import { useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import * as yup from 'yup';
@@ -13,10 +12,10 @@ import Error from '@/components/Error';
 import Input from '@/components/Input';
 import { View, Text } from '@/components/Themed';
 import useHidePassword from '@/hooks/useHidePassword';
-import { useSession } from '@/store/context/authCtx';
+import { useAuth } from '@/store/context/authCtx';
 
 export default function Register() {
-  const { onRegister, isLoading, signInError } = useSession();
+  const { onRegister, signInError, loading } = useAuth();
   const { hidePassword, onPressHidePassword } = useHidePassword();
   const schema = yup.object().shape({
     username: yup.string(),
@@ -48,7 +47,7 @@ export default function Register() {
   });
   const passwordWatch = watch('password');
 
-  if (isLoading) {
+  if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text style={styles.title}>Loading...</Text>
@@ -216,7 +215,11 @@ export default function Register() {
                 color='red'>{`Sign in error: ${signInError.message ?? 'Not Authorized'}`}</Error>
             )}
             <View style={styles.bottomTextContainer}>
-              <Button style={styles.buttonStyle} onPress={registerHandler}>
+              <Button
+                buttonTextSize={18}
+                buttonColor='#663399'
+                style={styles.buttonStyle}
+                onPress={registerHandler}>
                 Register
               </Button>
               <Text>Already have an account?</Text>

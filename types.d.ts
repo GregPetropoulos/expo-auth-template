@@ -42,10 +42,9 @@ export interface User {
   email: string;
   id: string; // get id from backend
 }
-
 export interface UserAuthCreds {
   username?: string;
-  email: string;
+  email?: string;
   password: string;
 }
 
@@ -67,3 +66,42 @@ export interface GoogleAuthUserInfo {
 export interface SignInError {
   message: string;
 }
+
+export interface AuthProps {
+  authState: { token: string | null; authenticated: boolean | null };
+  onGoogleSignIn?: () => void;
+  onSignIn: (userData: UserAuthCreds) => void;
+  onSignOut: () => void;
+  onRegister: (userData: UserAuthCreds) => void;
+  session: string | null;
+  isLoading: boolean;
+  signInError: SignInError | null;
+  userInfo: User | null;
+  loading: boolean;
+}
+
+export interface APIResponse {
+  data: TODO;
+  loading: boolean;
+  errorMessage: string | null;
+  refetch: () => void;
+}
+export interface APIConfig {
+  method: string;
+  headers: {
+    'Content-Type': string;
+    Accept: string;
+  };
+  body: string;
+}
+export interface AuthState {
+  token: string | null;
+  authenticated: boolean | null;
+}
+export interface FetchUserResponse {
+  token?: string;
+  data?: object;
+  id: string;
+  errorMessage?: string;
+}
+export type TODO = any;

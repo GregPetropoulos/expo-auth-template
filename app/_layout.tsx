@@ -8,7 +8,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { View } from '@/components/Themed';
 import { useColorScheme } from '@/components/useColorScheme';
-import { SessionProvider } from '@/store/context/authCtx';
+import { AuthProvider } from '@/store/context/authCtx';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -54,7 +54,7 @@ function RootLayoutNav() {
       {/* <StatusBar/> */}
       <SafeAreaProvider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <SessionProvider>
+          <AuthProvider>
             <View
               style={{
                 flex: 1,
@@ -64,7 +64,7 @@ function RootLayoutNav() {
               }}>
               <Slot />
             </View>
-          </SessionProvider>
+          </AuthProvider>
           {/* <Stack>
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
       </Stack> */}

@@ -2,10 +2,10 @@ import { Image, useWindowDimensions, StyleSheet } from 'react-native';
 
 import { View, Text } from './Themed';
 
-import { useSession } from '@/store/context/authCtx';
+import { useAuth } from '@/store/context/authCtx';
 
 const User = () => {
-  const { userInfo } = useSession();
+  const { userInfo } = useAuth();
   const { width } = useWindowDimensions();
 
   return (

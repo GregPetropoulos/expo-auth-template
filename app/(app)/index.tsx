@@ -2,16 +2,16 @@ import User from '../../components/User';
 
 import Button from '@/components/Button';
 import { View, Text } from '@/components/Themed';
-import { useSession } from '@/store/context/authCtx';
+import { useAuth } from '@/store/context/authCtx';
 
 export default function Index() {
-  const { isLoading, onSignOut } = useSession();
+  const { onSignOut, loading } = useAuth();
 
   const signoutHandler = () => {
     // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
     onSignOut();
   };
-  if (isLoading) {
+  if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ fontSize: 28 }}>Loading...</Text>

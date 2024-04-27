@@ -1,8 +1,13 @@
-export const mockUserCreds = {
+export const MOCK_USER_CREDS = {
   username: 'kevinryan',
   password: 'kev02937@'
+}; //us for fakestore endpoint
+export const MOCK_REGISTER_USER = {
+  username: 'Kevin Ryan', // full name
+  email: 'mockuser@gmail.com',
+  password: 'kev02937@'
 };
-export const mockUser = {
+export const MOCK_USER = {
   username: 'Kevin Ryan', // full name
   email: 'mockuser@gmail.com',
   id: '123id',

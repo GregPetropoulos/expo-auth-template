@@ -16,7 +16,10 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.gp.firebasesignin',
-      googleServicesFile: process.env.GOOGLE_SERVICES_INFOPLIST
+      googleServicesFile: process.env.GOOGLE_SERVICES_INFOPLIST,
+      config: {
+        usesNonExemptEncryption: false
+      }
     },
     android: {
       adaptiveIcon: {
@@ -31,7 +34,7 @@ export default {
       output: 'static',
       favicon: './assets/images/favicon.png'
     },
-    plugins: ['expo-router', 'expo-secure-store', '@react-native-google-signin/google-signin'],
+    plugins: ['expo-router', '@react-native-google-signin/google-signin', 'expo-secure-store'],
     experiments: {
       typedRoutes: true
     },

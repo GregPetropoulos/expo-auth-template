@@ -1,6 +1,6 @@
-# Google Authentication Template For A Expo Manage React Native project
+# Google & Apple Authentication Template For A Expo Manage React Native project
 
-### Configuring a basic app login template with Google's firebase for Android and iOS apps and development build for devices and simulators/emulators
+### Configuring a basic app login template with Google's firebase for Android and iOS apps and development build for devices and simulators/emulators. Use-Hook-Form and Yup used for validation and with Context API handling the state management. 
 
 ### Table of Contents
 
@@ -11,13 +11,15 @@
 - [Generate Credentials](#generating-credentials-sha-1)
 - [Web Client Id](#web-client-id)
 - [EAS Builds](#eas-builds)
+- [Apple Implementation](#apple-implementation)
+- [Test/Mocks](#test-mocks)
 - [User flow](#user-flow)
 - [Demo](#demo)
 - [Resources](#resources)
 
 # Setup
 
-Since we are building a standalone app outside of the Expo Go wrapper we need to install 3rd party libs and expo packages we need outside of the expo go app and update app.json plugins, etc
+Since we are building a standalone app outside of the Expo Go wrapper we need to install 3rd party libs and expo packages we need outside of the expo go app and update app.json plugins, etc. Initially start with Google sign in implementation and follow with validation, and lastly with Apple sign in 
 
 ### Install stuff
 
@@ -310,6 +312,16 @@ No preview or production builds just development builds. There are two critical 
   #### If you don't have an account yet
   - alternatively can connect to a mac with xcode see the link [connect to ios device with mac](https://docs.expo.dev/guides/ios-developer-mode/#connect-an-ios-device-with-a-mac)
 
+# Apple-Implementation
+
+### Install stuff
+npm i jsonwebtoken
+
+# Test/Mocks
+
+[Check API Responses](https://api.developbetterapps.com/api)
+
+MOCK_API_URL=https://api.developbetterapps.com
 ## User Flow
 
 ## Demo
