@@ -16,7 +16,7 @@
 - [User flow](#user-flow)
 - [Demo](#demo)
 - [Resources](#resources)
-
+- [*apple device needed](#apple-device-needed)
 # Setup
 
 Since we are building a standalone app outside of the Expo Go wrapper we need to install 3rd party libs and expo packages we need outside of the expo go app and update app.json plugins, etc. Initially start with Google sign in implementation and follow with validation, and lastly with Apple sign in 
@@ -286,6 +286,8 @@ No preview or production builds just development builds. There are two critical 
 
 ### Development for Real iOS devices
 
+##### *apple device needed
+
 #### iOS [Must have developer account](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-the-device)
 
 - Several more steps are needed for an ios device to be registered
@@ -312,10 +314,53 @@ No preview or production builds just development builds. There are two critical 
   #### If you don't have an account yet
   - alternatively can connect to a mac with xcode see the link [connect to ios device with mac](https://docs.expo.dev/guides/ios-developer-mode/#connect-an-ios-device-with-a-mac)
 
-# Apple-Implementation
+# Apple Implementation
+##### *apple device needed
+
+(Can not be tested on simulator and need an apple developer account to use dev build on registered ios device )
+
+## Apple Setup
 
 ### Install stuff
+
+- npx expo install  expo-secure-store
+
+- npx expo install  expo-apple-authentication
+
+### Add plugin to app.config.js 
+
+- plugins
+```javascript
+  plugins: [
+      'expo-router',
+      '@react-native-google-signin/google-signin',
+      'expo-secure-store',
+      'expo-apple-authentication'
+    ],
+```
+- In the ios object add usesAppleSignIn: true,
+```javascript
+ ios: {
+      supportsTablet: true,
+      bundleIdentifier: 'com.gp.firebasesignin',
+      googleServicesFile: process.env.GOOGLE_SERVICES_INFOPLIST,
+      usesAppleSignIn: true,
+      config: {
+        usesNonExemptEncryption: false
+      }
+    }
+```
+
+# JWT Implementation
+<!-- Need node to run to use this
 npm i jsonwebtoken
+npm i --save-dev @types/jsonwebtoken -->
+npx expo install jwt-decode
+
+- jwt-decode needs a polyfill since it's based on node.js and browser api's. React Native does not have access to the global atob 
+- npm i core-js
+
+
 
 # Test/Mocks
 
@@ -334,6 +379,8 @@ MOCK_API_URL=https://api.developbetterapps.com
 
 [Chelsea Farley Google Auth Guide](https://www.youtube.com/watch?v=HY3O_wrvDsI)
 
+[Chelsea Farley Apple Auth Guide](https://www.youtube.com/watch?v=fwGCCg0PQKo&list=PLzzljR-_nWVXKtQV4VSvM_pbRuEFD6QVK&index=39&t=1286s)
+
 [Expo Developer Keith Guide on Development Builds](https://www.youtube.com/watch?v=LUFHXsBcW6w)
 
 [Kadi Kraman Build and Deploy React Native Apps with Expo EAS ](https://egghead.io/courses/build-and-deploy-react-native-apps-with-expo-eas-85ab521e)
@@ -341,3 +388,9 @@ MOCK_API_URL=https://api.developbetterapps.com
 **docs**
 
 [Build for iOS simulator / Android emulator](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-emulatorsimulator)
+
+**issues**
+[atob polyfill for jwt](https://github.com/auth0/jwt-decode?tab=readme-ov-file#polyfilling-atob)
+
+**packages**
+[jwt-decode](https://www.npmjs.com/package/jwt-decode)

@@ -2,7 +2,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+// import * as AppleAuthentication from 'expo-apple-authentication';
 import { Link } from 'expo-router';
+// import {jwtDecode} from 'jwt-decode';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import * as yup from 'yup';
@@ -18,7 +20,15 @@ import { useAuth } from '@/store/context/authCtx';
 import { UserAuthCreds } from '@/types';
 
 export default function SignIn() {
-  const { onSignIn, onGoogleSignIn, signInError, loading } = useAuth();
+  const {
+    onSignIn,
+    onGoogleSignIn,
+    // onAppleSignIn,
+    // appleAuthAvailable,
+    // authState,
+    signInError,
+    loading
+  } = useAuth();
   const { hidePassword, onPressHidePassword } = useHidePassword();
 
   // Validation
@@ -42,9 +52,34 @@ export default function SignIn() {
   });
 
   // APPLE SIGN IN
+  //TODO Need apple developer account
+  // const getAppleAuthContent = () => {
+  //   // SHOW APPLE SIGN IN BUTTON IF THERE IS NO JWT TOKEN
+  //   if (!authState.token) {
+  //     return (
+  //       <AppleAuthentication.AppleAuthenticationButton
+  //         buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+  //         buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+  //         cornerRadius={5}
+  //         style={styles.appleButton}
+  //         onPress={onAppleSignIn}
+  //       />
+  //     );
+  //   } else {
+  //     // DECODE JWT AND SHOW USER AND CUSTOM BUTTONS
+  //     const decode = jwtDecode(authState.token);
+  //     const current = Date.now() / 1000;
+  //     return (
+  //       <View>
+  //         <Text>{decode.email}</Text>
+  //         <Text>Expired : {(current >= decode.exp).toString()}</Text>
+  //       </View>
+  //     );
+  //   }
+  // };
 
   const onSubmitSignIn = handleSubmit(({ password, email }: UserAuthCreds) => {
-    // Yup validated data gets sent to context then to server for a token
+    // Yup validated data gets sent to context then to server for a jwt token verified from backend
     onSignIn({ email, password });
   });
 
@@ -153,7 +188,12 @@ export default function SignIn() {
               testID='GoogleSigninButton'
               // disabled={password.length > 0 || username.length > 0}
             />
-            {/* APPLE AUTH SING IN HERE */}
+
+            {/* {!appleAuthAvailable ? getAppleAuthContent() : <Text>App Auth not available</Text>} */}
+            {/* {getAppleAuthContent()} */}
+            <Button style={{ marginVertical: 10 }} onPress={() => {}}>
+              {'Apple Implement Button'}
+            </Button>
           </View>
         </ScrollView>
       </View>
@@ -195,5 +235,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
     width: '100%'
-  }
+  },
+  appleButton: { width: 200, height: 64 }
 });

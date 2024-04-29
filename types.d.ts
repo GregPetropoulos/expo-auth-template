@@ -36,50 +36,32 @@ export interface ChildrenProps {
   children: React.ReactNode;
 }
 
-export interface User {
-  username: string; // full name
-  photo?: string; // url
-  email: string;
-  id: string; // get id from backend
+interface UserPayload {
+  name: string;
+  picture?: string;
+  email?: string;
 }
 export interface UserAuthCreds {
   username?: string;
   email?: string;
   password: string;
 }
-
-// based off the google userinfo
-export interface GoogleAuthUserInfo {
-  idToken: string;
-  serverAuthCode: string;
-  scopes: string[];
-  user: {
-    email: string;
-    id: string;
-    givenName: string;
-    familyName: string;
-    photo: string; // url
-    name: string; // full name
-  };
-}
-
 export interface SignInError {
   message: string;
 }
 
 export interface AuthProps {
-  authState: { token: string | null; authenticated: boolean | null };
+  authState: AuthState;
   onGoogleSignIn?: () => void;
+  // onAppleSignIn: () => void; when I have Apple Developer account
+  // appleAuthAvailable: boolean; when I have Apple Developer account
   onSignIn: (userData: UserAuthCreds) => void;
   onSignOut: () => void;
   onRegister: (userData: UserAuthCreds) => void;
-  session: string | null;
-  isLoading: boolean;
   signInError: SignInError | null;
-  userInfo: User | null;
   loading: boolean;
 }
-
+//TODO  Need to check this custom fetch hook response
 export interface APIResponse {
   data: TODO;
   loading: boolean;
