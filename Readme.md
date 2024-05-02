@@ -389,8 +389,43 @@ MOCK_API_URL=https://api.developbetterapps.com
 
 [Build for iOS simulator / Android emulator](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-emulatorsimulator)
 
+[app.config.js](https://docs.expo.dev/guides/typescript/#appconfigjs)
+[JWTIO](https://jwt.io/)
+
+[SecureStore](https://docs.expo.dev/versions/latest/sdk/securestore/)
+
+[Expo Apple Authentication](https://docs.expo.dev/versions/latest/sdk/apple-authentication/)
+
+[Google SignIn](https://github.com/react-native-google-signin/google-signin)
+
+[ESLint/Prettier](https://docs.expo.dev/guides/using-eslint/)
+
+[TypeScript-ESLint](https://github.com/typescript-eslint/typescript-eslint)
+
+[Expo Auth Guides](https://docs.expo.dev/guides/authentication/#guides)
+
+[Firebase](https://firebase.google.com/)
+
+[React and TS](https://react.dev/learn/typescript)
+
 **issues**
+
 [atob polyfill for jwt](https://github.com/auth0/jwt-decode?tab=readme-ov-file#polyfilling-atob)
 
+[jsonwebtoken needs nodejs to be running](https://github.com/auth0/node-jsonwebtoken#readme)
+
+[jsonwebtoken-issue-#899](https://github.com/auth0/node-jsonwebtoken/issues/899)
+
+[jsonwebtoken-issue-#221](https://github.com/auth0/node-jsonwebtoken/issues/221)
+
+[iOS Development builds require an Apple Developer Account](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-the-device)
+
 **packages**
+
 [jwt-decode](https://www.npmjs.com/package/jwt-decode)
+
+[atob](https://github.com/auth0/jwt-decode?tab=readme-ov-file#polyfilling-atob)
+
+[core-js](https://www.npmjs.com/package/core-js)
+
+

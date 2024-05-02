@@ -13,7 +13,8 @@ const HorizontalLine = ({ children }: ChildrenProps) => {
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 10
-      }}>
+      }}
+      testID='CustomHorizontalLineComponent'>
       <View style={{ width: '40%', borderBottomColor: 'grey', borderBottomWidth: 2 }}></View>
       {children}
       <View style={{ width: '40%', borderBottomColor: 'grey', borderBottomWidth: 2 }}></View>

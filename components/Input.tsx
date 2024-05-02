@@ -21,7 +21,7 @@ const Input = ({
   icon
 }: InputProps) => {
   return (
-    <View style={styles.inputContainer}>
+    <View style={styles.inputContainer} testID='CustomInput'>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputIconContainer}>
         <TextInput

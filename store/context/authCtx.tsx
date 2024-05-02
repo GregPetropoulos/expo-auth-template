@@ -8,7 +8,7 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 import { MOCK_FAKESTORE_AUTH_API, MOCK_FAKESTORE_REGISTER_API } from '@/__mocks__/mock-endpoints';
 import { MOCK_USER_CREDS, MOCK_REGISTER_USER } from '@/__mocks__/mock-user';
 import fetchUser from '@/http/fetchUser';
-import { UserAuthCreds, SignInError, AuthProps, AuthState } from '@/types';
+import { UserAuthCreds, AuthProps, AuthState } from '@/types';
 
 const TOKEN_KEY = 'my-jwt';
 
@@ -36,7 +36,7 @@ export const useAuth = () => {
 
 export function AuthProvider(props: React.PropsWithChildren) {
   // const [appleAuthAvailable, setAppleAuthAvailable] = useState(false); when I have Apple Developer account
-  const [signInError, setSignInError] = useState<SignInError | null>(null);
+  const [signInError, setSignInError] = useState<{ message: string } | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [authState, setAuthState] = useState<AuthState>({
     token: null,

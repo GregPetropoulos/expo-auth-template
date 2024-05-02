@@ -17,7 +17,6 @@ import Input from '@/components/Input';
 import { View, Text } from '@/components/Themed';
 import useHidePassword from '@/hooks/useHidePassword';
 import { useAuth } from '@/store/context/authCtx';
-import { UserAuthCreds } from '@/types';
 
 export default function SignIn() {
   const {
@@ -78,7 +77,7 @@ export default function SignIn() {
   //   }
   // };
 
-  const onSubmitSignIn = handleSubmit(({ password, email }: UserAuthCreds) => {
+  const onSubmitSignIn = handleSubmit(({ password, email }) => {
     // Yup validated data gets sent to context then to server for a jwt token verified from backend
     onSignIn({ email, password });
   });

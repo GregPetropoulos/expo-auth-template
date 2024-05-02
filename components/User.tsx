@@ -20,7 +20,7 @@ const User = () => {
     email: payload.email
   };
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='UserComponent'>
       <Text style={styles.username}>{user.name}</Text>
       <Image
         source={user.picture ? { uri: user.picture } : require('../assets/images/favicon.png')}

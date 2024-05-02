@@ -41,13 +41,11 @@ interface UserPayload {
   picture?: string;
   email?: string;
 }
+// ok
 export interface UserAuthCreds {
   username?: string;
   email?: string;
   password: string;
-}
-export interface SignInError {
-  message: string;
 }
 
 export interface AuthProps {
@@ -58,7 +56,7 @@ export interface AuthProps {
   onSignIn: (userData: UserAuthCreds) => void;
   onSignOut: () => void;
   onRegister: (userData: UserAuthCreds) => void;
-  signInError: SignInError | null;
+  signInError: { message: string } | null;
   loading: boolean;
 }
 //TODO  Need to check this custom fetch hook response
