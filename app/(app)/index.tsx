@@ -3,9 +3,11 @@ import User from '../../components/User';
 import Button from '@/components/Button';
 import { View, Text } from '@/components/Themed';
 import { useAuth } from '@/store/context/authCtx';
-
+import { usePathname } from 'expo-router';
 export default function Index() {
   const { onSignOut, loading } = useAuth();
+  const pathname= usePathname()
+  console.log('pathname', pathname);
 
   const signoutHandler = () => {
     // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.

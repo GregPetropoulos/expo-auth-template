@@ -14,7 +14,8 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "ts-node/register",
-    "app.config.ts"
+    "app.config.ts",
+    "expect-matchers.d.ts"
   ],
   "exclude": ["node_modules"]
 }

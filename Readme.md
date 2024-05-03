@@ -1,6 +1,6 @@
 # Google & Apple Authentication Template For A Expo Manage React Native project
 
-### Configuring a basic app login template with Google's firebase for Android and iOS apps and development build for devices and simulators/emulators. Use-Hook-Form and Yup used for validation and with Context API handling the state management. 
+### Configuring a basic app login template with Google's firebase for Android and iOS apps and development build for devices and simulators/emulators. Use-Hook-Form and Yup used for validation and with Context API handling the state management.
 
 ### Table of Contents
 
@@ -16,10 +16,12 @@
 - [User flow](#user-flow)
 - [Demo](#demo)
 - [Resources](#resources)
-- [*apple device needed](#apple-device-needed)
+- [\*apple device needed](#apple-device-needed)
+- [Testing](testing)
+
 # Setup
 
-Since we are building a standalone app outside of the Expo Go wrapper we need to install 3rd party libs and expo packages we need outside of the expo go app and update app.json plugins, etc. Initially start with Google sign in implementation and follow with validation, and lastly with Apple sign in 
+Since we are building a standalone app outside of the Expo Go wrapper we need to install 3rd party libs and expo packages we need outside of the expo go app and update app.json plugins, etc. Initially start with Google sign in implementation and follow with validation, and lastly with Apple sign in
 
 ### Install stuff
 
@@ -146,8 +148,8 @@ Implemented this in the `sign-in.ts` page to POC then will later implement into 
    - Save
    <!-- ?? NOT SURE IF THIS NEEDED SINCE WE DOWNLOAD THE UPDATED VERSIONS OF THE GOOGLESERVICES-PLIST IN THE LATER STEPS??
    After saving, download the environment variables to your machine, later will use these for the build via EAS
-    - <span style='color:orange'> GoogleServices-info.Plist </span> (for iOS sign in )
-    -  <span style='color:orange'>google-services.json</span> (for Android sign in) -->
+   - <span style='color:orange'> GoogleServices-info.Plist </span> (for iOS sign in )
+   - <span style='color:orange'>google-services.json</span> (for Android sign in) -->
 
 ### iOS App
 
@@ -286,7 +288,7 @@ No preview or production builds just development builds. There are two critical 
 
 ### Development for Real iOS devices
 
-##### *apple device needed
+##### \*apple device needed
 
 #### iOS [Must have developer account](https://docs.expo.dev/develop/development-builds/create-a-build/#create-a-build-for-the-device)
 
@@ -315,7 +317,8 @@ No preview or production builds just development builds. There are two critical 
   - alternatively can connect to a mac with xcode see the link [connect to ios device with mac](https://docs.expo.dev/guides/ios-developer-mode/#connect-an-ios-device-with-a-mac)
 
 # Apple Implementation
-##### *apple device needed
+
+##### \*apple device needed
 
 (Can not be tested on simulator and need an apple developer account to use dev build on registered ios device )
 
@@ -323,13 +326,14 @@ No preview or production builds just development builds. There are two critical 
 
 ### Install stuff
 
-- npx expo install  expo-secure-store
+- npx expo install expo-secure-store
 
-- npx expo install  expo-apple-authentication
+- npx expo install expo-apple-authentication
 
-### Add plugin to app.config.js 
+### Add plugin to app.config.js
 
 - plugins
+
 ```javascript
   plugins: [
       'expo-router',
@@ -338,7 +342,9 @@ No preview or production builds just development builds. There are two critical 
       'expo-apple-authentication'
     ],
 ```
+
 - In the ios object add usesAppleSignIn: true,
+
 ```javascript
  ios: {
       supportsTablet: true,
@@ -352,21 +358,99 @@ No preview or production builds just development builds. There are two critical 
 ```
 
 # JWT Implementation
+
 <!-- Need node to run to use this
 npm i jsonwebtoken
 npm i --save-dev @types/jsonwebtoken -->
+
 npx expo install jwt-decode
 
-- jwt-decode needs a polyfill since it's based on node.js and browser api's. React Native does not have access to the global atob 
+- jwt-decode needs a polyfill since it's based on node.js and browser api's. React Native does not have access to the global atob
 - npm i core-js
 
+# Testing
 
+#### Install stuff
+
+1. npx expo install -- --save-dev jest-expo jest
+
+   - update package.json
+
+   ```json
+     "scripts": {
+         ...
+         "test": "jest"
+       },
+     ...
+     "jest": {
+         "preset": "jest-expo",
+         "transformIgnorePatterns": [
+       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+     ]
+       }
+   ```
+
+2. npx expo install -- --save-dev @types/jest
+
+3. npm i --save-dev @types/react-test-renderer
+
+4. npm install --save-dev @testing-library/react-native
+   - npx expo install react-native-reanimated
+   - updated the babel.config.js and make sure its lasted in the plugin
+   ```
+         module.exports = {
+       presets: [
+         ... // don't add it here :)
+       ],
+       plugins: [
+         ...
+         'react-native-reanimated/plugin',
+       ],
+     };
+   ```
+5. npx expo start -c
+6. Create a `__test__` folder in the root directory outside of the app folder
+7. create a app.test.tsx file with the following code
+
+```javascript
+// it('top level', () => {
+//   expect(1).toBe(1);
+// });
+
+import { renderRouter, screen } from 'expo-router/testing-library';
+import { View } from 'react-native';
+it('my-test', async () => {
+  const MockComponent = jest.fn(() => <View />);
+
+  renderRouter(
+    {
+      index: MockComponent,
+      '/sign-in': MockComponent,
+      '(group)/b': MockComponent
+    },
+    {
+      initialUrl: '/sign-in'
+    }
+  );
+
+  expect(screen).toHavePathname('/sign-in');
+});
+```
+
+- To fix the toHavePathname issues [expo-issues-fix-for-toHavePathname](https://github.com/expo/expo/discussions/26856#discussioncomment-8575803)
+
+### IMPORTANT:
+
+Look in your package.json and check what version of react you are using. You need to install the same version of react-test-renderer for compatibility. For example, I'm using "react": "18.1.0" - Therefore I need to install "react-test-renderer": "18.1.0"
+
+`npx expo install react-test-renderer@18.1.0`
 
 # Test/Mocks
 
 [Check API Responses](https://api.developbetterapps.com/api)
 
 MOCK_API_URL=https://api.developbetterapps.com
+
 ## User Flow
 
 ## Demo
@@ -427,5 +511,3 @@ MOCK_API_URL=https://api.developbetterapps.com
 [atob](https://github.com/auth0/jwt-decode?tab=readme-ov-file#polyfilling-atob)
 
 [core-js](https://www.npmjs.com/package/core-js)
-
-

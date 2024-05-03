@@ -167,7 +167,7 @@ export default function SignIn() {
             <View style={styles.bottomTextContainer}>
               <Button
                 buttonTextSize={18}
-                buttonColor='#663399'
+                buttonColor={styles.buttonColor.color}
                 style={styles.buttonStyle}
                 onPress={onSubmitSignIn}>
                 Sign in
@@ -191,7 +191,7 @@ export default function SignIn() {
             {/* {!appleAuthAvailable ? getAppleAuthContent() : <Text>App Auth not available</Text>} */}
             {/* {getAppleAuthContent()} */}
             <Button style={{ marginVertical: 10 }} onPress={() => {}}>
-              {'Apple Implement Button'}
+              {'Temp Apple Button'}
             </Button>
           </View>
         </ScrollView>
@@ -235,5 +235,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: '100%'
   },
+  buttonColor: { color: '#663399' },
   appleButton: { width: 200, height: 64 }
 });
