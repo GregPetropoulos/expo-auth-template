@@ -96,8 +96,11 @@ export default function SignIn() {
       style={{ flexGrow: 1 }}>
       <View style={{ flex: 1 }}>
         <ScrollView keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}>
-          <View style={styles.form}>
-            <Text style={styles.title}>App Sign In</Text>
+          <View 
+           style={styles.form}>
+            <Text  accessibilityRole='header' style={styles.title}>
+              App Sign In
+            </Text>
             <View style={styles.inputContainer}>
               <Controller
                 control={control}
@@ -117,6 +120,7 @@ export default function SignIn() {
                         placeholderTextColor='grey'
                         value={value}
                         onChangeHandleText={onChange}
+                        testID='Y'
                       />
                       {errors.email && <Error>{errors.email.message}</Error>}
                     </>
@@ -166,6 +170,7 @@ export default function SignIn() {
             )}
             <View style={styles.bottomTextContainer}>
               <Button
+              accessibilityRole='button'
                 buttonTextSize={18}
                 buttonColor={styles.buttonColor.color}
                 style={styles.buttonStyle}
@@ -190,7 +195,7 @@ export default function SignIn() {
 
             {/* {!appleAuthAvailable ? getAppleAuthContent() : <Text>App Auth not available</Text>} */}
             {/* {getAppleAuthContent()} */}
-            <Button style={{ marginVertical: 10 }} onPress={() => {}}>
+            <Button  accessibilityRole='button' style={{ marginVertical: 10 }} onPress={() => {}}>
               {'Temp Apple Button'}
             </Button>
           </View>

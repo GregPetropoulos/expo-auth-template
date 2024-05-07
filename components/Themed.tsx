@@ -59,6 +59,7 @@ export function TextInput(props: TextInputProps) {
 
   return (
     <DefaultTextInput
+      accessibilityLabel='input'
       style={[{ color, borderColor, borderWidth: 0.5 }, style]}
       {...otherProps}
       testID='DefaultThemeTextInput'

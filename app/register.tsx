@@ -72,7 +72,9 @@ export default function Register() {
       <View style={{ flex: 1 }}>
         <ScrollView keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}>
           <View style={styles.form}>
-            <Text style={styles.title}>App Register User</Text>
+            <Text accessibilityRole='header' style={styles.title}>
+              App Register User
+            </Text>
             <View style={styles.inputContainer}>
               <Controller
                 control={control}

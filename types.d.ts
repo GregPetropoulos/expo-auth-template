@@ -5,8 +5,8 @@ export type InputProps = {
   label?: string | undefined;
   keyboardType?: KeyboardTypeOptions;
   secure?: boolean;
-  onChangeHandleText: any;
-  value: string | undefined;
+  onChangeHandleText?: any;
+  value?: string | undefined;
   placeholder?: string;
   maxLength?: number;
   returnKeyType?: ReturnKeyTypeOptions;
@@ -16,6 +16,8 @@ export type InputProps = {
   onSubmitEditing?: () => void;
   blurOnSubmit?: boolean;
   icon?: ReactElement;
+  testID?: string;
+  accessibilityLabel?: string;
 };
 
 export interface ButtonProps {
@@ -25,6 +27,7 @@ export interface ButtonProps {
   disabled?: boolean;
   buttonTextSize?: number;
   buttonColor?: string;
+  accessibilityRole?: string;
 }
 export interface ErrorProps {
   children: React.ReactNode;

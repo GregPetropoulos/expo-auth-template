@@ -18,10 +18,12 @@ const Input = ({
   placeholderTextColor,
   onEndEditing,
   onSubmitEditing,
-  icon
+  icon,
+  testID,
+  accessibilityLabel,
 }: InputProps) => {
   return (
-    <View style={styles.inputContainer} testID='CustomInput'>
+    <View style={styles.inputContainer}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputIconContainer}>
         <TextInput
@@ -40,6 +42,8 @@ const Input = ({
           placeholderTextColor={placeholderTextColor}
           onEndEditing={onEndEditing}
           onSubmitEditing={onSubmitEditing}
+          accessibilityLabel={accessibilityLabel}
+          // testID={testID}
         />
         {icon}
       </View>
