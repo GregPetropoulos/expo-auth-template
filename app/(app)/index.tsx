@@ -6,7 +6,7 @@ import { useAuth } from '@/store/context/authCtx';
 import { usePathname } from 'expo-router';
 export default function Index() {
   const { onSignOut, loading } = useAuth();
-  const pathname= usePathname()
+  const pathname = usePathname();
   console.log('pathname', pathname);
 
   const signoutHandler = () => {

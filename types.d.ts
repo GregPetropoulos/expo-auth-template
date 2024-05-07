@@ -27,7 +27,6 @@ export interface ButtonProps {
   disabled?: boolean;
   buttonTextSize?: number;
   buttonColor?: string;
-  accessibilityRole?: string;
 }
 export interface ErrorProps {
   children: React.ReactNode;

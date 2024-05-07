@@ -30,7 +30,7 @@ describe('Testing Accessible Components', () => {
   });
   it('Accessibility of submission button', () => {
     const mockOnPress = jest.fn();
-    render(<Button accessibilityRole='button' onPress={mockOnPress}>Submit Test</Button>);
+    render(<Button onPress={mockOnPress}>Submit Test</Button>);
     expect(screen.getByRole('button'));
   });
 });

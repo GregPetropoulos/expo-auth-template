@@ -20,7 +20,7 @@ const Input = ({
   onSubmitEditing,
   icon,
   testID,
-  accessibilityLabel,
+  accessibilityLabel
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
