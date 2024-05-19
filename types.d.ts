@@ -27,6 +27,7 @@ export interface ButtonProps {
   disabled?: boolean;
   buttonTextSize?: number;
   buttonColor?: string;
+  testID?: string;
 }
 export interface ErrorProps {
   children: React.ReactNode;

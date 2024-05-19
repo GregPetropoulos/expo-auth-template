@@ -169,6 +169,7 @@ export default function SignIn() {
             )}
             <View style={styles.bottomTextContainer}>
               <Button
+                testID='sign-in-button'
                 buttonTextSize={18}
                 buttonColor={styles.buttonColor.color}
                 style={styles.buttonStyle}
@@ -176,7 +177,7 @@ export default function SignIn() {
                 Sign in
               </Button>
               <Text>Don't have an account?</Text>
-              <Link href='/register'>
+              <Link href='/register' accessibilityRole='link' role='link'>
                 <Text style={styles.linkText}>Create a new user</Text>
               </Link>
             </View>

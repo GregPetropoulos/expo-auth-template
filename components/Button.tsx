@@ -10,12 +10,13 @@ const Button = ({
   style,
   children,
   onPress,
-  disabled
+  disabled,
+  testID
 }: ButtonProps) => {
   return (
     <Pressable
       accessibilityRole='button'
-      testID='CustomButton'
+      testID={testID}
       android_ripple={{ color: 'blue' }}
       style={({ pressed }) => [
         styles.button,
